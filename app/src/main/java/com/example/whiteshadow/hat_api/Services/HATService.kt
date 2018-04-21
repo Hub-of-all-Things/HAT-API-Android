@@ -43,12 +43,7 @@ open class HATService {
         }
     }
 
-    /**
-     * 
-     *
-     * @param  
-     * @return 
-     */
+
     fun loginToHATAuthorization(applicationName: String,
                                 url: String,
                                 success: ((String?, String?) -> Unit)?,
