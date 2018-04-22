@@ -5,7 +5,7 @@ ext {
     bintrayRepo = 'HAT-API-Android'
     bintrayName = 'HAT-API-Android'
 
-    publishedGroupId = ''
+    publishedGroupId = 'com.hubofallthings.com'
     libraryName = 'HAT-API-Android'
     artifact = 'HAT-API-Android'
 
@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android'
     gitUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android.git'
 
-    libraryVersion = '0.0.5'
+    libraryVersion = '0.0.8'
 
     developerId = 'whiteshadow'
     developerName = 'Marios Tsekis'
@@ -125,77 +125,23 @@ bintray {
     }
 }
 
-//apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+apply plugin: 'maven'
 
-apply plugin: 'maven-publish'
+task createPOM {
+    pom {
+        project {
+            groupId 'com.hubofallthings.HAT_API_Android'
+            artifactId 'HAT_API_Android'
+            version '0.0.8'
 
-task androidJavadocs(type: Javadoc) {
-    source = android.sourceSets.main.java.srcDirs
-    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    android.libraryVariants.all { variant ->
-        if (variant.name == 'release') {
-            owner.classpath += variant.javaCompile.classpath
-        }
-    }
-    exclude '**/R.html', '**/R.*.html', '**/index.html'
-}
-
-task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
-//    classifier = 'javadoc'
-//    from androidJavadocs.destinationDir
-}
-
-task androidSourcesJar(type: Jar) {
-    classifier = 'sources'
-    from android.sourceSets.main.java.srcDirs
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            //groupId 'cz.example'
-            //artifactId 'custom-artifact'
-            //version = android.defaultConfig.versionName
-
-            artifact bundleRelease
-            artifact androidJavadocsJar
-            artifact androidSourcesJar
-
-            pom.withXml {
-                final dependenciesNode = asNode().appendNode('dependencies')
-
-                ext.addDependency = { Dependency dep, String scope ->
-                    if (dep.group == null || dep.version == null || dep.name == null || dep.name == "unspecified")
-                        return // ignore invalid dependencies
-
-                    final dependencyNode = dependenciesNode.appendNode('dependency')
-                    dependencyNode.appendNode('groupId', dep.group)
-                    dependencyNode.appendNode('artifactId', dep.name)
-                    dependencyNode.appendNode('version', dep.version)
-                    dependencyNode.appendNode('scope', scope)
-
-                    if (!dep.transitive) {
-                        // If this dependency is transitive, we should force exclude all its dependencies them from the POM
-                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                        exclusionNode.appendNode('groupId', '*')
-                        exclusionNode.appendNode('artifactId', '*')
-                    } else if (!dep.properties.excludeRules.empty) {
-                        // Otherwise add specified exclude rules
-                        final exclusionNode = dependencyNode.appendNode('exclusions').appendNode('exclusion')
-                        dep.properties.excludeRules.each { ExcludeRule rule ->
-                            exclusionNode.appendNode('groupId', rule.group ?: '*')
-                            exclusionNode.appendNode('artifactId', rule.module ?: '*')
-                        }
-                    }
+            inceptionYear '2018'
+            licenses {
+                license {
+                    name 'MPL-2.0'
+                    url 'https://opensource.org/licenses/MPL-2.0'
+                    distribution 'repo'
                 }
-
-                // List all "compile" dependencies (for old Gradle)
-                configurations.compile.getAllDependencies().each { dep -> addDependency(dep, "compile") }
-                // List all "api" dependencies (for new Gradle) as "compile" dependencies
-                configurations.api.getAllDependencies().each { dep -> addDependency(dep, "compile") }
-                // List all "implementation" dependencies (for new Gradle) as "runtime" dependencies
-                configurations.implementation.getAllDependencies().each { dep -> addDependency(dep, "runtime") }
             }
         }
-    }
+    }.writeTo("pom.xml")
 }

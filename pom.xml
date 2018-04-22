@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hubofallthings.HAT-API-Android</groupId>
   <artifactId>HAT-API-Android</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.8</version>
   <packaging>aar</packaging>
   <dependencies>
     <dependency>
