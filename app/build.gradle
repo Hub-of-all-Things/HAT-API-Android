@@ -92,12 +92,39 @@ artifacts {
     archives sourcesJar
 }
 
+apply plugin: 'maven'
+
+task createPOM {
+
+    pom {
+
+        project {
+
+            groupId 'com.hubofallthings.HAT_API_Android'
+            artifactId 'HAT_API_Android'
+            version '0.0.8'
+
+            inceptionYear '2018'
+            licenses {
+
+                license {
+
+                    name 'MPL-2.0'
+                    url 'https://opensource.org/licenses/MPL-2.0'
+                    distribution 'repo'
+                }
+            }
+        }
+    }.writeTo("pom.xml")
+}
+
 // Bintray
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 bintray {
 
+    createPOM
     user = properties.getProperty("bintray.user")
     key = properties.getProperty("bintray.apikey")
 
@@ -123,25 +150,4 @@ bintray {
             }
         }
     }
-}
-
-apply plugin: 'maven'
-
-task createPOM {
-    pom {
-        project {
-            groupId 'com.hubofallthings.HAT_API_Android'
-            artifactId 'HAT_API_Android'
-            version '0.0.8'
-
-            inceptionYear '2018'
-            licenses {
-                license {
-                    name 'MPL-2.0'
-                    url 'https://opensource.org/licenses/MPL-2.0'
-                    distribution 'repo'
-                }
-            }
-        }
-    }.writeTo("pom.xml")
 }
