@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android'
     gitUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android.git'
 
-    libraryVersion = '0.0.1'
+    libraryVersion = '0.0.2'
 
     developerId = 'whiteshadow'
     developerName = 'Marios Tsekis'
