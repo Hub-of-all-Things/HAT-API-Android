@@ -107,19 +107,12 @@ class HATNetworkManager: NetworkLayer {
 
     fun getQueryStringParameter(url: String?, param: String): String? {
 
-        if (url != null) {
+        if (!url.isNullOrEmpty()) {
 
-            val sanititizer = UrlQuerySanitizer()
-            sanititizer.parseUrl(url)
-            val parameters = sanititizer.parameterList
-
-            for (item in parameters) {
-
-                if (item.mParameter == param) {
-
-                    return item.mValue
-                }
-            }
+            val sanitizer = UrlQuerySanitizer()
+            sanitizer.allowUnregisteredParamaters = true
+            sanitizer.parseUrl(url)
+            return sanitizer.getValue(param)
         }
 
         return null

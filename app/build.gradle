@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android'
     gitUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android.git'
 
-    libraryVersion = '0.0.8'
+    libraryVersion = '0.0.9'
 
     developerId = 'whiteshadow'
     developerName = 'Marios Tsekis'
@@ -63,8 +63,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.beust:klaxon:2.1.14'
     implementation 'com.github.kittinunf.fuel:fuel-android:1.12.1' //for Android
-    compile 'com.auth0.android:jwtdecode:1.1.1'
-    compile 'com.nimbusds:nimbus-jose-jwt:5.8'
+    implementation 'com.auth0.android:jwtdecode:1.1.1'
+    implementation 'com.nimbusds:nimbus-jose-jwt:5.8'
     implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
 }
 apply plugin: 'com.jfrog.bintray'
@@ -102,7 +102,7 @@ task createPOM {
 
             groupId 'com.hubofallthings.HAT_API_Android'
             artifactId 'HAT_API_Android'
-            version '0.0.8'
+            version '0.0.9'
 
             inceptionYear '2018'
             licenses {

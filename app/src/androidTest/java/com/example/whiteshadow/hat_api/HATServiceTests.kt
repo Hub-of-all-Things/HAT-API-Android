@@ -4,6 +4,8 @@ import com.auth0.android.jwt.JWT
 import com.example.whiteshadow.hat_api.Managers.ResultType
 import com.example.whiteshadow.hat_api.Services.HATService
 import org.junit.Test
+import org.junit.Assert.assertTrue
+import org.junit.Assert.assertFalse
 
 class HATServiceTests {
 
@@ -31,12 +33,12 @@ class HATServiceTests {
 
         fun successTest(userDomain: String?, newToken: String?): Unit {
 
-            assert(true)
+            assertTrue(true)
         }
 
         fun failedTest(error: HATError): Unit {
 
-            assert(false)
+            assertFalse(false)
         }
 
         HATService().verifyToken(
@@ -46,9 +48,7 @@ class HATServiceTests {
                 decodedToken,
                 userDomain,
                 {userDomain, newToken-> successTest(userDomain, newToken)},
-                { error1 -> failedTest(error1)
-
-        })
-
+                { error1 -> failedTest(error1) }
+        )
     }
 }
