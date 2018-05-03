@@ -1,8 +1,6 @@
 package com.example.whiteshadow.hat_api.Services
 
-import com.auth0.android.jwt.JWT
 import com.example.whiteshadow.hat_api.Configuration.ContentType
-import com.example.whiteshadow.hat_api.Configuration.RequestHeaders
 import com.example.whiteshadow.hat_api.Configuration.TokenParameters
 import com.example.whiteshadow.hat_api.Configuration.VerifiedDomains
 import com.example.whiteshadow.hat_api.HATError
@@ -10,6 +8,8 @@ import com.example.whiteshadow.hat_api.Managers.HATNetworkManager
 import com.example.whiteshadow.hat_api.Managers.ResultType
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
+import com.nimbusds.jwt.JWT
+import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
 import java.io.StringReader
 import java.net.URLEncoder
@@ -18,13 +18,15 @@ import java.security.interfaces.RSAPublicKey
 import org.bouncycastle.util.io.pem.PemReader
 
 import java.security.KeyFactory
+import java.security.KeyPair
 import java.security.spec.X509EncodedKeySpec
+import javax.crypto.KeyGenerator
 
 /**
  * Created by whiteshadow on 23/3/18.
  */
 open class HATService {
-    
+
     fun formatAndVerifyDomain(userHATDomain: String,
                               verifiedDomains: Array<String> = VerifiedDomains().verifiedHATDomains(),
                               successfulVerification: (String) -> Void,
@@ -49,18 +51,18 @@ open class HATService {
                                 success: ((String?, String?) -> Unit)?,
                                 failed: ((HATError) -> Unit)?) {
 
-        val token = HATNetworkManager().getQueryStringParameter(url, RequestHeaders().xAuthToken)
-        if (token != null) {
+        val token = HATNetworkManager().getQueryStringParameter(url, "token")
+        if (!token.isNullOrEmpty()) {
 
-            val decodedToken = JWT(token)
-            val userDomain = decodedToken.getClaim(TokenParameters().userDomain).toString()
+            val decodedToken = JWTParser.parse(token)
+            val userDomain = decodedToken.jwtClaimsSet.getClaim(TokenParameters().userDomain).toString()
             val headers = listOf("Accept" to ContentType().plain, "Content-Type" to ContentType().plain)
-            val encodedUrl = this.getPublicKeyURL(url)
+            val encodedUrl = this.getPublicKeyURL(userDomain)
 
             HATNetworkManager().getRequestString(encodedUrl, null, headers, {
                 r ->
 
-                this.verifyToken(r, token, applicationName, decodedToken, userDomain, success, failed)
+                this.verifyToken(r, token!!, applicationName, decodedToken, userDomain, success, failed)
             })
         }
 
@@ -78,7 +80,7 @@ open class HATService {
 
             ResultType.IsSuccess -> {
 
-                if (decodedToken.issuer == null) {
+                if (decodedToken.jwtClaimsSet.issuer.isNullOrEmpty()) {
 
                     val error = HATError()
                     error.errorMessage = "No issuer found in token"
@@ -87,17 +89,17 @@ open class HATService {
                     return@verifyToken
                 } else {
 
-                    val appName = decodedToken.getClaim("application").toString()
-                    val accessScope = decodedToken.getClaim("accessScope").toString()
+                    val appName = decodedToken.jwtClaimsSet.getClaim("application")
+                    val accessScope = decodedToken.jwtClaimsSet.getClaim("accessScope")
 
-                    if (appName != applicationName && accessScope == "") {
+                    if (appName != null && accessScope == null) {
 
                         val error = HATError()
                         error.errorMessage = "No application or accessScope claim has been found in token"
                         error.errorCode = 401
                         failed?.invoke(error)
                         return@verifyToken
-                    } else if (accessScope != "owner" && appName == "") {
+                    } else if ((accessScope != null && accessScope.toString() != "owner") && appName == null) {
 
                         val error = HATError()
                         error.errorMessage = "No application or accessScope claim has been found in token"
@@ -106,9 +108,11 @@ open class HATService {
                         return@verifyToken
                     }
 
-                    if (r.resultString != null) {
+                    if (!r.resultString.isNullOrEmpty()) {
 
-                        val key = readPublicKey(r.resultString!!) as RSAPublicKey?
+                        success?.invoke(userDomain, token)
+
+                        val key = readPublicKey(r.resultString!!)
 
                         try {
 
@@ -127,7 +131,6 @@ open class HATService {
                         failed?.invoke(error)
                         return@verifyToken
                     }
-
                 }
             }
             ResultType.HasFailed -> {
@@ -141,18 +144,19 @@ open class HATService {
         }
     }
 
-    private fun readPublicKey(publicKey: String): PublicKey {
+    fun readPublicKey(publicKey: String): RSAPublicKey {
 
         val reader = PemReader(StringReader(publicKey))
         val keyBytes = reader.readPemObject().content
 
         val kf = KeyFactory.getInstance("RSA")
         val keySpec = X509EncodedKeySpec(keyBytes)
-        return kf.generatePublic(keySpec)
+
+        return kf.generatePublic(keySpec) as RSAPublicKey
     }
 
-    private fun getPublicKeyURL(url: String): String {
+    private fun getPublicKeyURL(userDomain: String): String {
 
-        return "https://" + URLEncoder.encode(url, "utf-8") + "/publickey"
+        return "https://$userDomain/publickey"
     }
 }
