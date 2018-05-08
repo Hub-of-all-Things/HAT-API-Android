@@ -1,13 +1,15 @@
 package com.example.whiteshadow.hat_api.Managers
 
 import android.net.UrlQuerySanitizer
+import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
+import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 
 interface NetworkLayer {
 
-    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit)
+    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
     fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit)
 }
 
@@ -21,9 +23,10 @@ class HATNetworkManager: NetworkLayer {
 
     var resultType: ResultType? = null
 
-    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
-        url.httpGet(parameters).responseJson{ request, response, result ->
+        FuelManager.instance.baseHeaders = headers
+        Fuel.get(url, parameters).responseJson{ request, response, result ->
 
             //do something with response
             when (result) {
