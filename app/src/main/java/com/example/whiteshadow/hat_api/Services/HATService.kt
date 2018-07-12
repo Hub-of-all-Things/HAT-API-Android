@@ -56,7 +56,7 @@ open class HATService {
 
             val decodedToken = JWTParser.parse(token)
             val userDomain = decodedToken.jwtClaimsSet.getClaim(TokenParameters().userDomain).toString()
-            val headers = listOf("Accept" to ContentType().plain, "Content-Type" to ContentType().plain)
+            val headers = mapOf("Accept" to ContentType().plain, "Content-Type" to ContentType().plain)
             val encodedUrl = this.getPublicKeyURL(userDomain)
 
             HATNetworkManager().getRequestString(encodedUrl, null, headers, {
@@ -90,16 +90,8 @@ open class HATService {
                 } else {
 
                     val appName = decodedToken.jwtClaimsSet.getClaim("application")
-                    val accessScope = decodedToken.jwtClaimsSet.getClaim("accessScope")
 
-                    if (appName != null && accessScope == null) {
-
-                        val error = HATError()
-                        error.errorMessage = "No application or accessScope claim has been found in token"
-                        error.errorCode = 401
-                        failed?.invoke(error)
-                        return@verifyToken
-                    } else if ((accessScope != null && accessScope.toString() != "owner") && appName == null) {
+                    if (appName == null) {
 
                         val error = HATError()
                         error.errorMessage = "No application or accessScope claim has been found in token"

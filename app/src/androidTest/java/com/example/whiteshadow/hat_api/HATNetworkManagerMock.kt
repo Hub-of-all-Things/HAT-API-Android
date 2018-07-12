@@ -4,30 +4,30 @@ import android.net.UrlQuerySanitizer
 import com.example.whiteshadow.hat_api.Managers.HATNetworkManager
 import com.example.whiteshadow.hat_api.Managers.NetworkLayer
 import com.example.whiteshadow.hat_api.Managers.ResultType
+import com.github.kittinunf.fuel.android.core.Json
 import org.junit.Test
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 
 class HATNetworkManagerTest: NetworkLayer {
 
-    val body = listOf(mapOf(
-        "endpoint" to "spotify/profile",
-        "recordId" to "f277374c-df57-410c-aa07-d448eb9354da",
-        "data" to mapOf(
-            "id" to "21vteht26stx2pltn3bdodrqi",
-            "uri" to "spotify:user:21vteht26stx2pltn3bdodrqi",
-            "href" to "https://api.spotify.com/v1/users/21vteht26stx2pltn3bdodrqi",
-            "type" to "user",
-            "email" to "liz_chandler@yahoo.com",
-            "country" to "LT",
-            "product" to "open",
-            "birthdate" to "1998-01-18",
-            "dateCreated" to "2018-04-09T06:18:56.208Z",
-            "display_name" to "Liz Chandler"
-        )
-    ))
+    val body: Json = Json("[{\"endpoint\" : \"spotify/profile\",\n" +
+            "        \"recordId\" : \"f277374c-df57-410c-aa07-d448eb9354da\",\n" +
+            "        \"data\" : {\n" +
+            "            \"id\" : \"21vteht26stx2pltn3bdodrqi\",\n" +
+            "            \"uri\" : \"spotify:user:21vteht26stx2pltn3bdodrqi\",\n" +
+            "            \"href\" : \"https://api.spotify.com/v1/users/21vteht26stx2pltn3bdodrqi\",\n" +
+            "            \"type\" : \"user\",\n" +
+            "            \"email\" : \"liz_chandler@yahoo.com\",\n" +
+            "            \"country\" : \"LT\",\n" +
+            "            \"product\" : \"open\",\n" +
+            "            \"birthdate\" : \"1998-01-18\",\n" +
+            "            \"dateCreated\" : \"2018-04-09T06:18:56.208Z\",\n" +
+            "            \"display_name\" : \"Liz Chandler\"}\n" +
+            "        }]")
 
-    override fun getRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit) {
+
+    override fun getRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
         val type = ResultType.IsSuccess
         type.statusCode = 200
@@ -38,7 +38,7 @@ class HATNetworkManagerTest: NetworkLayer {
         completion(type)
     }
 
-    override fun getRequestString(url: String, parameters: List<Pair<String, Any?>>?, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequestString(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
         val type = ResultType.IsSuccess
         type.statusCode = 200
@@ -63,7 +63,7 @@ class HATNetworkManagerTest: NetworkLayer {
 
         }
 
-        getRequest("", null, listOf("x-auth-token" to "123"), { r -> completion(r) })
+        getRequest("", null, mapOf("x-auth-token" to "123"), { r -> completion(r) })
     }
 
     @Test

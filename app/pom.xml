@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.hubofallthings.HAT_API_Android</groupId>
   <artifactId>HAT_API_Android</artifactId>
-  <version>0.0.16</version>
+  <version>0.0.20</version>
   <inceptionYear>2018</inceptionYear>
   <licenses>
     <license>

@@ -1,17 +1,20 @@
 package com.example.whiteshadow.hat_api.Managers
 
 import android.net.UrlQuerySanitizer
+import com.beust.klaxon.Json
+import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
+import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 
 interface NetworkLayer {
 
-    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit)
-    fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit)
+    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
+    fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
 }
 
-enum class ResultType(var statusCode: Int?, var error: Error?, var json: List<Map<String, Any>>?, var resultString: String?, var token: String?){
+enum class ResultType(var statusCode: Int?, var error: Error?, var json: com.github.kittinunf.fuel.android.core.Json?, var resultString: String?, var token: String?){
 
     IsSuccess(null, null, null, null, null),
     HasFailed(null, null, null,null, null);
@@ -21,9 +24,10 @@ class HATNetworkManager: NetworkLayer {
 
     var resultType: ResultType? = null
 
-    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
-        url.httpGet(parameters).responseJson{ request, response, result ->
+        FuelManager.instance.baseHeaders = headers
+        Fuel.get(url, parameters).responseJson{ request, response, result ->
 
             //do something with response
             when (result) {
@@ -46,7 +50,7 @@ class HATNetworkManager: NetworkLayer {
                 is Result.Success -> {
 
                     val token = response.headers["x-auth-token"]?.first()
-                    val test2 = result.component1() as? List<Map<String, Any>>?
+                    val test2 = result.component1()
 
                     var test = ResultType.IsSuccess
                     test.statusCode = response.statusCode
@@ -63,7 +67,7 @@ class HATNetworkManager: NetworkLayer {
         }
     }
 
-    override fun getRequestString(url: String , parameters: List<Pair<String, Any?>>?, headers: List<Pair<String, String>>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequestString(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
         url.httpGet(parameters).responseString{request, response, result ->
 
