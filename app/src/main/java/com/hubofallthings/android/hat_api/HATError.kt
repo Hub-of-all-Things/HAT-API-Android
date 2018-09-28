@@ -1,4 +1,4 @@
-package com.example.whiteshadow.hat_api
+package com.hubofallthings.android.hat_api
 
 enum class ExceptionType {
 
@@ -24,7 +24,6 @@ class HATError: Exception() {
         this.error = errorException
 
         if (errorCode == 401) {
-
             this.exceptionType = ExceptionType.Unauthorised
         } else if (errorCode == 403) {
 

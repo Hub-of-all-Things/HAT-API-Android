@@ -1,20 +1,14 @@
-package com.example.whiteshadow.hat_api
+package com.hubofallthings.android.hat_api
 
-import com.example.whiteshadow.hat_api.Configuration.ContentType
-import com.example.whiteshadow.hat_api.Configuration.TokenParameters
-import com.example.whiteshadow.hat_api.Managers.ResultType
-import com.example.whiteshadow.hat_api.Services.HATService
+import com.hubofallthings.android.hat_api.Managers.ResultType
+import com.hubofallthings.android.hat_api.Services.HATService
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
-import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
-import org.bouncycastle.asn1.cmc.CMCStatus.success
-import org.bouncycastle.asn1.eac.RSAPublicKey
 import org.junit.Test
 import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
-import java.text.ParseException
 
 class HATServiceTests {
 

@@ -1,26 +1,22 @@
-package com.example.whiteshadow.hat_api.Services
+package com.hubofallthings.android.hat_api.Services
 
-import com.example.whiteshadow.hat_api.Configuration.ContentType
-import com.example.whiteshadow.hat_api.Configuration.TokenParameters
-import com.example.whiteshadow.hat_api.Configuration.VerifiedDomains
-import com.example.whiteshadow.hat_api.HATError
-import com.example.whiteshadow.hat_api.Managers.HATNetworkManager
-import com.example.whiteshadow.hat_api.Managers.ResultType
+import com.hubofallthings.android.hat_api.Configuration.ContentType
+import com.hubofallthings.android.hat_api.Configuration.TokenParameters
+import com.hubofallthings.android.hat_api.Configuration.VerifiedDomains
+import com.hubofallthings.android.hat_api.HATError
+import com.hubofallthings.android.hat_api.Managers.HATNetworkManager
+import com.hubofallthings.android.hat_api.Managers.ResultType
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
 import java.io.StringReader
-import java.net.URLEncoder
-import java.security.PublicKey
 import java.security.interfaces.RSAPublicKey
 import org.bouncycastle.util.io.pem.PemReader
 
 import java.security.KeyFactory
-import java.security.KeyPair
 import java.security.spec.X509EncodedKeySpec
-import javax.crypto.KeyGenerator
 
 /**
  * Created by whiteshadow on 23/3/18.

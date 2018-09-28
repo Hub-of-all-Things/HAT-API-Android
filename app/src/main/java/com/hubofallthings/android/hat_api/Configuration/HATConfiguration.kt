@@ -1,4 +1,4 @@
-package com.example.whiteshadow.hat_api.Configuration
+package com.hubofallthings.android.hat_api.Configuration
 
 class VerifiedDomains{
 

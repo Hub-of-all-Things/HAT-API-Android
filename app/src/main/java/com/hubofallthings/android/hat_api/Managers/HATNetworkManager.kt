@@ -1,7 +1,6 @@
-package com.example.whiteshadow.hat_api.Managers
+package com.hubofallthings.android.hat_api.Managers
 
 import android.net.UrlQuerySanitizer
-import com.beust.klaxon.Json
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.core.FuelManager

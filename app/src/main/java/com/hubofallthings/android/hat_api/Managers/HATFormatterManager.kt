@@ -1,4 +1,4 @@
-package com.example.whiteshadow.hat_api.Managers
+package com.hubofallthings.android.hat_api.Managers
 
 class HATFormatterManager {
 

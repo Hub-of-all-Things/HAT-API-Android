@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.whiteshadow.hat_api">
+    package="com.hubofallthings.android.hat_api">
 
     <application
         android:allowBackup="true"
