@@ -1,4 +1,4 @@
-package com.hubofallthings.android.hat_api.Managers
+package com.hubofallthings.android.hatApi.Managers
 
 import android.net.UrlQuerySanitizer
 import com.github.kittinunf.fuel.Fuel
@@ -26,7 +26,7 @@ class HATNetworkManager: NetworkLayer {
     override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
         FuelManager.instance.baseHeaders = headers
-        Fuel.get(url, parameters).responseJson{ request, response, result ->
+        Fuel.get(url, parameters).responseJson{ _, response, result ->
 
             //do something with response
             when (result) {
@@ -36,7 +36,7 @@ class HATNetworkManager: NetworkLayer {
                     val ex = result.getException()
                     val error = Error(ex)
 
-                    var test = ResultType.HasFailed
+                    val test = ResultType.HasFailed
                     test.statusCode = response.statusCode
                     test.error = error
                     test.json = null
@@ -48,10 +48,10 @@ class HATNetworkManager: NetworkLayer {
                 }
                 is Result.Success -> {
 
-                    val token = response.headers["x-auth-token"]?.first()
+                    val token = response.headers["X-Auth-Token"]?.last()
                     val test2 = result.component1()
 
-                    var test = ResultType.IsSuccess
+                    val test = ResultType.IsSuccess
                     test.statusCode = response.statusCode
                     test.error = null
                     test.json = test2
@@ -68,7 +68,7 @@ class HATNetworkManager: NetworkLayer {
 
     override fun getRequestString(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
-        url.httpGet(parameters).responseString{request, response, result ->
+        url.httpGet(parameters).responseString{_, response, result ->
 
             //do something with response
             when (result) {
@@ -77,8 +77,7 @@ class HATNetworkManager: NetworkLayer {
 
                     val ex = result.getException()
                     val error = Error(ex)
-
-                    var test = ResultType.HasFailed
+                    val test = ResultType.HasFailed
                     test.statusCode = response.statusCode
                     test.error = error
                     test.json = null
@@ -89,11 +88,9 @@ class HATNetworkManager: NetworkLayer {
                     completion(resultType)
                 }
                 is Result.Success -> {
-
-                    val token = response.headers["x-auth-token"]?.first()
+                    val token = response.headers["X-Auth-Token"]?.last()
                     val test2 = result.component1()
-
-                    var test = ResultType.IsSuccess
+                    val test = ResultType.IsSuccess
                     test.statusCode = response.statusCode
                     test.error = null
                     test.json = null

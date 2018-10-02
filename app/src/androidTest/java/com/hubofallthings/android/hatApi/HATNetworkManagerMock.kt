@@ -1,8 +1,8 @@
-package com.hubofallthings.android.hat_api
+package com.hubofallthings.android.hatApi
 
-import com.hubofallthings.android.hat_api.Managers.HATNetworkManager
-import com.hubofallthings.android.hat_api.Managers.NetworkLayer
-import com.hubofallthings.android.hat_api.Managers.ResultType
+import com.hubofallthings.android.hatApi.Managers.HATNetworkManager
+import com.hubofallthings.android.hatApi.Managers.NetworkLayer
+import com.hubofallthings.android.hatApi.Managers.ResultType
 import com.github.kittinunf.fuel.android.core.Json
 import org.junit.Test
 import org.junit.Assert.assertTrue

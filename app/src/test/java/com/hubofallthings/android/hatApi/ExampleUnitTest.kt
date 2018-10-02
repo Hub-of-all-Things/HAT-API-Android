@@ -1,4 +1,4 @@
-package com.hubofallthings.android.hat_api
+package com.hubofallthings.android.hatApi
 
 
 import org.junit.jupiter.api.Assertions.assertEquals

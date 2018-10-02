@@ -1,11 +1,11 @@
-package com.hubofallthings.android.hat_api.Services
+package com.hubofallthings.android.hatApi.Services
 
-import com.hubofallthings.android.hat_api.Configuration.ContentType
-import com.hubofallthings.android.hat_api.Configuration.TokenParameters
-import com.hubofallthings.android.hat_api.Configuration.VerifiedDomains
-import com.hubofallthings.android.hat_api.HATError
-import com.hubofallthings.android.hat_api.Managers.HATNetworkManager
-import com.hubofallthings.android.hat_api.Managers.ResultType
+import com.hubofallthings.android.hatApi.Configuration.ContentType
+import com.hubofallthings.android.hatApi.Configuration.TokenParameters
+import com.hubofallthings.android.hatApi.Configuration.VerifiedDomains
+import com.hubofallthings.android.hatApi.HATError
+import com.hubofallthings.android.hatApi.Managers.HATNetworkManager
+import com.hubofallthings.android.hatApi.Managers.ResultType
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWT
@@ -55,11 +55,9 @@ open class HATService {
             val headers = mapOf("Accept" to ContentType().plain, "Content-Type" to ContentType().plain)
             val encodedUrl = this.getPublicKeyURL(userDomain)
 
-            HATNetworkManager().getRequestString(encodedUrl, null, headers, {
-                r ->
-
+            HATNetworkManager().getRequestString(encodedUrl, null, headers) { r ->
                 this.verifyToken(r, token!!, applicationName, decodedToken, userDomain, success, failed)
-            })
+            }
         }
 
     }

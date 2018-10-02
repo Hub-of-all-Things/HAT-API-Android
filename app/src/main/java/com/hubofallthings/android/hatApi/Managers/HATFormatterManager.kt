@@ -1,4 +1,4 @@
-package com.hubofallthings.android.hat_api.Managers
+package com.hubofallthings.android.hatApi.Managers
 
 class HATFormatterManager {
 

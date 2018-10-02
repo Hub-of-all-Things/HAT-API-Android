@@ -1,4 +1,4 @@
-package com.hubofallthings.android.hat_api.Configuration
+package com.hubofallthings.android.hatApi.Configuration
 
 class VerifiedDomains{
 

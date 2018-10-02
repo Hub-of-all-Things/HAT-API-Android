@@ -1,7 +1,7 @@
-package com.hubofallthings.android.hat_api
+package com.hubofallthings.android.hatApi
 
-import com.hubofallthings.android.hat_api.Managers.ResultType
-import com.hubofallthings.android.hat_api.Services.HATService
+import com.hubofallthings.android.hatApi.Managers.ResultType
+import com.hubofallthings.android.hatApi.Services.HATService
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTParser
