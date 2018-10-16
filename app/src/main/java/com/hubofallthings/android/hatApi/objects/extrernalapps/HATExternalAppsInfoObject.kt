@@ -1,6 +1,6 @@
 package com.hubofallthings.hatappandroid.`object`.externalapps
 
-import com.hubofallthings.hatappandroid.`object`.FeedItem
+import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
 import java.io.Serializable
 
 data class  HATExternalAppsInfoObject(
@@ -29,7 +29,7 @@ data class  HATExternalAppsInfoObject(
     val description: HATExternalAppsInfoDescriptionObject? = null,
 
     /// The data preview of the app
-    val dataPreview: Array<FeedItem>?,
+    val dataPreview: Array<HATFeedObject>?,
 
     /// The graphics, images, needed for this app (logo, banner and screenshots)
     val graphics: HATExternalAppsInfoGraphicsObject,

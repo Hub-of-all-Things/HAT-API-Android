@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
-        assertEquals("com.hubofallthings.android.hat_api.test", appContext.packageName)
+        assertEquals("com.hubofallthings.android.hatApi.test", appContext.packageName)
     }
 }

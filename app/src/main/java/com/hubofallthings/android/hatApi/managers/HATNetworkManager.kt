@@ -1,4 +1,4 @@
-package com.hubofallthings.android.hatApi.Managers
+package com.hubofallthings.android.hatApi.managers
 
 import android.net.UrlQuerySanitizer
 import com.github.kittinunf.fuel.Fuel

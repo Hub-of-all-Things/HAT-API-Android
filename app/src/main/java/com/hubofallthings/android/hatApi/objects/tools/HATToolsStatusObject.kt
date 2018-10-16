@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.tools
+package com.hubofallthings.android.hatApi.objects.tools
 
 import java.io.Serializable
 
