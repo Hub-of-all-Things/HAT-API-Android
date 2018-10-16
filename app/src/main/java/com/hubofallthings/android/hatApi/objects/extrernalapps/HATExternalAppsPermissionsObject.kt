@@ -1,0 +1,18 @@
+package com.hubofallthings.hatappandroid.`object`.externalapps
+
+import com.fasterxml.jackson.annotation.JsonSetter
+import com.fasterxml.jackson.annotation.Nulls
+import com.hubofallthings.hatappandroid.`object`.dataoffers.DataOfferRequiredDataDefinitionObjectV2
+import java.io.Serializable
+
+data class HATExternalAppsPermissionsObject(
+        // MARK: - Variables
+
+        // Any roles granted with this app
+        val rolesGranted: Array<HATExternalAppsPermissionsRolesGrantedObject>? = null,
+        // The bundle info required for this app
+        val dataRequired: HATExternalAppsDataRequiredObject? = null,
+        // The bundle info required for this app
+        @JsonSetter(nulls = Nulls.AS_EMPTY)
+        val dataRetrieved: DataOfferRequiredDataDefinitionObjectV2? = null
+): Serializable
