@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.externalapps
+package com.hubofallthings.android.hatApi.objects.extrernalapps
 
 import java.io.Serializable
 
@@ -7,9 +7,9 @@ data class HATExternalAppsStatusObject(
 
         /// The compatibility of this app
         val compatibility: String = "",
-                /// The endpoing this app will be reading or writing on HAT
+        /// The endpoing this app will be reading or writing on HAT
         val recentDataCheckEndpoint: String = "",
-                /// The kind of the app
+        /// The kind of the app
         val kind: String = "",
         val statusUrl: String? = null,
         val expectedStatus: Int? = null,

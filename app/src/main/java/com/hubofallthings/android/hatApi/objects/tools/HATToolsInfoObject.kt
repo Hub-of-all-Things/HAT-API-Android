@@ -1,7 +1,7 @@
 package com.hubofallthings.android.hatApi.objects.tools
 
+import com.hubofallthings.android.hatApi.objects.extrernalapps.HATExternalAppsInfoDescriptionObject
 import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
-import com.hubofallthings.hatappandroid.`object`.externalapps.HATExternalAppsInfoDescriptionObject
 import java.io.Serializable
 
 data class HATToolsInfoObject(

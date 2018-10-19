@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.externalapps
+package com.hubofallthings.android.hatApi.objects.extrernalapps
 
 import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
 import java.io.Serializable

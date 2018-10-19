@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.externalapps
+package com.hubofallthings.android.hatApi.objects.extrernalapps
 
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
@@ -10,8 +10,8 @@ data class HATExternalAppsDataRequiredObject(
 
          val rolling: Boolean = false,
         // The bundle info definition for this app
-        @JsonSetter(nulls = Nulls.AS_EMPTY)
-        val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
+         @JsonSetter(nulls = Nulls.AS_EMPTY)
+         val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
          val startDate: String? = null,
          val endDate: String? = null
 ): Serializable

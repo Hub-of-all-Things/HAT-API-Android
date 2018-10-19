@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.externalapps
+package com.hubofallthings.android.hatApi.objects.extrernalapps
 
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
