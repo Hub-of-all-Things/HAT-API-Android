@@ -255,13 +255,29 @@ class HATExternalAppsService : ExternalAppsService {
         } else {
             fun completionApp(list : List<HATApplicationObject>?,newToken  : String?){
                 doAsync {
-                    if (!applicationId.isNotEmpty() && list!=null){
+                    if (applicationId.isNotEmpty() && list!=null){
+                        var appObj : HATApplicationObject? = null
                         for (i in list.indices){
                             if(list[i].application?.id == applicationId){
-                                completion(list[i],newToken)
+                                appObj = list[i]
                                 break
                             }
                         }
+                        uiThread {
+                            if(appObj != null){
+                                completion(appObj,newToken)
+                            } else {
+                                val e = HATError()
+                                e.errorMessage = "application is null"
+                                e.errorCode = 400
+                                failCallBack(e)
+                            }
+                        }
+                    } else{
+                        val e = HATError()
+                        e.errorMessage = "app id or list is empty"
+                        e.errorCode = 400
+                        failCallBack(e)
                     }
                 }
             }
