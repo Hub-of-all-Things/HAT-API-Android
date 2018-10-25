@@ -1,5 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.profile
-
+package com.hubofallthings.android.hatApi.objects.profile
 import java.io.Serializable
 
 data class HATProfileDataProfileOnlineObject(

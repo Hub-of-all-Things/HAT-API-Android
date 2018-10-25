@@ -1,6 +1,6 @@
 package com.hubofallthings.android.hatApi.objects.tools
 
-import com.hubofallthings.hatappandroid.`object`.dataoffers.DataOfferRequiredDataDefinitionBundleKeyV2
+import com.hubofallthings.android.hatApi.objects.dataoffers.DataOfferRequiredDataDefinitionBundleKeyV2
 import java.io.Serializable
 
 data class HATToolsDataBundleObject(

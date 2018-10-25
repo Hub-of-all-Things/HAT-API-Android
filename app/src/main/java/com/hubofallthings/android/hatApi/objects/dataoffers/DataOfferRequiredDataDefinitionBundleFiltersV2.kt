@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.dataoffers
+package com.hubofallthings.android.hatApi.objects.dataoffers
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import java.io.Serializable

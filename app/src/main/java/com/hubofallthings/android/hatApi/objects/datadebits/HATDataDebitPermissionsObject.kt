@@ -2,7 +2,7 @@ package com.hubofallthings.android.hatApi.objects.datadebits
 import com.hubofallthings.android.hatApi.objects.dataoffers.DataOfferRequiredDataDefinitionObjectV2
 import java.io.Serializable
 
-data class DataDebitPermissionsObject(
+data class HATDataDebitPermissionsObject(
     // MARK: - Variables
 
     /// The created date of the permission

@@ -71,8 +71,8 @@ class HATTestExternalAppsParser{
                         "text": "The Rockafeller Skank - Short Edit,\nFatboy Slim,\nYou've Come a Long Way Baby (10th Anniversary Edition)",
                         "media": [
                             {
-                                "thumbnail": "https://i.scdn.co/image/99058aaab9a3160fa5ae75e26229bf00ae32e991",
-                                "url": "https://i.scdn.co/image/99058aaab9a3160fa5ae75e26229bf00ae32e991"
+                                "thumbnail": "",
+                                "url": ""
                             }
                         ]
                     }

@@ -2,32 +2,32 @@ package com.hubofallthings.android.hatApi.objects.datadebits
 
 import java.io.Serializable
 
-data class DataDebitObject (
+data class HATDataDebitObject (
     // MARK: - Variables
     /// The data debit key
-    val dataDebitKey: String = "",
+        val dataDebitKey: String = "",
     /// The date created of the data debit
-    val dateCreated: String = "",
+        val dateCreated: String = "",
     /// The permissions of the data debit
-    val permissions: Array<DataDebitPermissionsObject>,
+        val permissions: Array<HATDataDebitPermissionsObject>,
     /// The client name of the data debit
-    val requestClientName: String = "",
+        val requestClientName: String = "",
     /// The client url of the data debit
-    val requestClientUrl: String = "",
+        val requestClientUrl: String = "",
     /// The client logo URL of the data debit
-    val requestClientLogoUrl: String = "",
+        val requestClientLogoUrl: String = "",
     /// The description of the data debit
-    val requestDescription: String?,
+        val requestDescription: String?,
     /// The id of the application, if the data debit is an application
-    val requestApplicationId: String?,
+        val requestApplicationId: String?,
     /// Is data debit active?
-    val active: Boolean = false,
+        val active: Boolean = false,
     /// The start date of the data debit
-    val start: String?,
+        val start: String?,
     /// The end date of the data debit
-    val end: String?,
+        val end: String?,
     /// Are permissions still active
-    val permissionsActive: DataDebitPermissionsObject?,
+        val permissionsActive: HATDataDebitPermissionsObject?,
     /// The last permission set
-    val permissionsLatest: DataDebitPermissionsObject
+        val permissionsLatest: HATDataDebitPermissionsObject
     ) : Serializable

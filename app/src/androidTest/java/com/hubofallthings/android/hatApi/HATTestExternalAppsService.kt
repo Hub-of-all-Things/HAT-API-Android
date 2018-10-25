@@ -2,15 +2,32 @@ package com.hubofallthings.android.hatApi
 
 import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObject
 import com.hubofallthings.android.hatApi.objects.extrernalapps.HATExternalAppsInfoDeveloperObject
+import com.hubofallthings.android.hatApi.objects.extrernalapps.HATExternalAppsKindObject
 import com.hubofallthings.android.hatApi.objects.extrernalapps.HATExternalAppsObject
 import com.hubofallthings.android.hatApi.services.ExternalAppsService
 import org.junit.Assert
 import org.junit.Test
 
 class HATTestExternalAppsService : ExternalAppsService{
-    private val mockAppsObj = HATApplicationObject(HATExternalAppsObject("testapp",null,null, HATExternalAppsInfoDeveloperObject("","","",""),null,null,null))
-    private val tokenReturn = "2592fsdfsdf348j0572v89jhf9dsyguisd"
 
+
+    private val mockAppsObj = HATApplicationObject(HATExternalAppsObject("testapp", HATExternalAppsKindObject("","","App"),null, HATExternalAppsInfoDeveloperObject("","","",""),null,null,null))
+    private val mockAppsObjDataPlug = HATApplicationObject(HATExternalAppsObject("testDataPlug", HATExternalAppsKindObject("","","DataPlug"),null, HATExternalAppsInfoDeveloperObject("","","",""),null,null,null))
+
+    private val tokenReturn = "2592fsdfsdf348j0572v89jhf9dsyguisd"
+    private val listApps = listOf<HATApplicationObject>(mockAppsObj,mockAppsObjDataPlug)
+
+    override fun getExternalByKind(kind: String, userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getDataPlugs(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getApps(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
     override fun getExternalApps(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         if(userToken.isEmpty()){
             val e = HATError()

@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.dataoffers
+package com.hubofallthings.android.hatApi.objects.dataoffers
 
 import java.io.Serializable
 

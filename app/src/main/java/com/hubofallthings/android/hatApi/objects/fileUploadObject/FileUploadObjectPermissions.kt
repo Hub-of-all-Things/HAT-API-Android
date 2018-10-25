@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.`object`.fileuploadobject
+package com.hubofallthings.android.hatApi.objects.fileUploadObject
 
 data class FileUploadObjectPermissions(
     /// The user id that uploaded the file

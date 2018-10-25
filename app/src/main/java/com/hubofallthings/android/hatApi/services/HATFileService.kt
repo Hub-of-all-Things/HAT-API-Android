@@ -1,4 +1,4 @@
-package com.hubofallthings.hatappandroid.services
+package com.hubofallthings.android.hatApi.services
 
 import android.util.Log
 import com.fasterxml.jackson.annotation.JsonSetter
@@ -10,7 +10,10 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
-import com.hubofallthings.hatappandroid.`object`.fileuploadobject.FileUploadObject
+import com.hubofallthings.android.hatApi.managers.toKotlinObject
+import com.hubofallthings.android.hatApi.objects.fileUploadObject.FileUploadObject
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
@@ -19,11 +22,11 @@ class HATFileService {
     private val TAG = HATFileService::class.java.simpleName
 
     private fun uploadFileToHAT(
-        fileName: String,
-        token: String,
-        userDomain: String,
-        completion: (FileUploadObject, String) -> Unit,
-        errorCallback: (FuelError) -> Unit
+            fileName: String,
+            token: String,
+            userDomain: String,
+            completion: (FileUploadObject, String) -> Unit,
+            errorCallback: (FuelError) -> Unit
     ) {
 
         // create the url
@@ -46,8 +49,15 @@ class HATFileService {
                     Log.i(TAG, response.responseMessage + response.statusCode.toString())
                     if (! result.component1().isNullOrEmpty()) {
                         if (result.component1() != null) {
-                            val fileObject = jsonToFileUpload(result.component1() !!)
-                            completion(fileObject, "")
+                            val jsonString = result.component1()
+                            doAsync {
+                                val fileObject = jsonString?.toKotlinObject<FileUploadObject>()
+                                uiThread {
+                                    if(fileObject!=null){
+                                        completion(fileObject, "")
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -64,7 +74,7 @@ class HATFileService {
         errorCallback: (FuelError) -> Unit) {
 
         FuelManager.instance.baseHeaders = mapOf("x-amz-server-side-encryption" to "AES256")
-        Fuel.put(contentUrl).body(fullyReadFileToBytes(image)).responseString{_, response, result ->
+        Fuel.put(contentUrl).body(image.readBytes()).responseString{_, response, result ->
             when (result) {
                 is Result.Failure -> {
                     Log.i(TAG, "Uploadfailed")
@@ -106,7 +116,6 @@ class HATFileService {
         } finally {
             fis.close()
         }
-
         return bytes
     }
     private fun completeUploadFileToHAT(
@@ -131,8 +140,15 @@ class HATFileService {
                     Log.i(TAG, "Completion success")
                     Log.i(TAG, response.responseMessage + response.statusCode.toString())
                     if (response.statusCode == 200) {
-                        val fileObject = jsonToFileUpload(result.component1() !!)
-                        completion(fileObject, "")
+                        val jsonString = result.component1()
+                        doAsync {
+                            val fileObject = jsonString?.toKotlinObject<FileUploadObject>()
+                            uiThread {
+                                if(fileObject!=null){
+                                    completion(fileObject, "")
+                                }
+                            }
+                        }
                     }
                 }
                 else -> {
@@ -140,49 +156,40 @@ class HATFileService {
             }
         }
     }
-        fun makeFilePublic(
+    fun makeFilePublic(
             fileID: String,
             token: String,
             userDomain: String,
             completion: ((Boolean) -> Unit)?,
             errorCallBack: ((FuelError) -> Unit)?) {
-            // create the url
-            val uploadURL = "https://$userDomain/api/v2.6/files/allowAccessPublic/$fileID"
-            FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
-            Fuel.get(uploadURL).responseString { request, response, result ->
-                when (result) {
-                    is Result.Failure -> {
-                        Log.i(TAG, "Public failed")
-                        Log.i(TAG, response.responseMessage + response.statusCode.toString())
-                        if (errorCallBack != null) {
-                            errorCallBack(result.error)
-                        }
-                    }
-                    is Result.Success -> {
-                        Log.i(TAG, "Public success")
-                        Log.i(TAG, response.responseMessage + response.statusCode.toString())
-                        if (response.statusCode == 200) {
-                            if (completion != null) {
-                                completion(true)
-                            }
-                        }
-                    }
-                    else -> {
+        // create the url
+        val uploadURL = "https://$userDomain/api/v2.6/files/allowAccessPublic/$fileID"
+        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
+        Fuel.get(uploadURL).responseString { request, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    Log.i(TAG, "Public failed")
+                    Log.i(TAG, response.responseMessage + response.statusCode.toString())
+                    if (errorCallBack != null) {
+                        errorCallBack(result.error)
                     }
                 }
-
+                is Result.Success -> {
+                    Log.i(TAG, "Public success")
+                    Log.i(TAG, response.responseMessage + response.statusCode.toString())
+                    if (response.statusCode == 200) {
+                        if (completion != null) {
+                            completion(true)
+                        }
+                    }
+                }
+                else -> {
+                }
             }
-        }
 
-        private fun jsonToFileUpload(json: String): FileUploadObject {
-            val mapper = jacksonObjectMapper()
-            mapper.configOverride(String::class.java).setSetterInfo(JsonSetter.Value.forValueNulls(Nulls.FAIL))
-            mapper.setDefaultSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY))
-            mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-            mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            val fileObject = mapper.readValue<FileUploadObject>(json)
-            return fileObject
         }
+    }
+
         /**
         Creates the json file to purchase a HAT
 
