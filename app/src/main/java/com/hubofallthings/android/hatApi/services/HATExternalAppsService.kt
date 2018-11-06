@@ -250,7 +250,7 @@ class HATExternalAppsService : ExternalAppsService {
     }
 
     override fun getAppWithAppId(userToken: String, userDomain: String, applicationId: String, completion: (HATApplicationObject?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        if (applicationId == "hatapp"){
+        if (applicationId == "hatapp" || applicationId == "hatappstaging"){
             getAppInfo(userToken,userDomain,applicationId,{app,newToken -> completion(app,newToken)},{error -> failCallBack(error)})
         } else {
             fun completionApp(list : List<HATApplicationObject>?,newToken  : String?){
