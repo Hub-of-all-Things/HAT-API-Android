@@ -22,27 +22,21 @@ class HATAccountService{
     - parameter successCallback: A function of type (String, String?) to call on success
     - parameter failCallback: A fuction of type (HATError) to call on fail
      */
-    fun resetPassword(userDomain: String, email: String, successCallback:  (String) -> Unit, failCallback:  (HATError) -> Unit) {
+    fun resetPassword(userDomain: String, email: String, successCallback:  (String?) -> Unit, failCallback:  (HATError) -> Unit) {
         val url =  "https://$userDomain/control/v2/auth/passwordReset"
-        val timeout = 25000 // 25 seconds.
-        val timeoutRead = 25000 // 25 seconds.
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
-        val mapper = jacksonObjectMapper()
-        val passwordReset = mapper.writeValueAsString(mapOf("email" to email))
 
-        Fuel.post(url).body(passwordReset).timeout(timeout).timeoutRead(timeoutRead).response { _, response, result ->
-            when (result){
-                is Result.Failure -> {
-                    val e = HATError()
-                    e.errorCode = response.statusCode
-                    e.errorMessage = response.responseMessage
-                    failCallback(e)
-                }
-                is Result.Success -> {
-                    if(response.statusCode == 200){
-                        successCallback(response.responseMessage)
-                    }
-                }
+        val mapper = jacksonObjectMapper()
+        val passwordResetBody = mapper.writeValueAsString(mapOf("email" to email))
+
+        HATNetworkManager().postRequest(url,passwordResetBody,mapOf("Content-Type" to "application/json")) {
+            if(it?.statusCode == 200){
+                successCallback(it.token)
+            } else{
+                val e = HATError()
+                e.errorCode = it?.statusCode
+                e.errorMessage = it?.error?.localizedMessage
+                failCallback(e)
             }
         }
     }
@@ -59,7 +53,7 @@ class HATAccountService{
     - parameter successCallback: A function of type (Boolean, String?) to call on success
     - parameter failCallback: A fuction of type (HATError) to call on fail
      */
-    fun createCombinator(userDomain: String, userToken: String, endPoint: String, combinatorName: String, fieldToFilter: String, lowerValue: Int, upperValue: Int, transformationType: String? = null, transformationPart: String? = null, successCallback: (Boolean, String?) -> Unit, failCallback: (String) -> Unit) {
+    fun createCombinator(userDomain: String, userToken: String, endPoint: String, combinatorName: String, fieldToFilter: String, lowerValue: Int, upperValue: Int, transformationType: String? = null, transformationPart: String? = null, successCallback: (Boolean, String?) -> Unit, failCallback: (HATError) -> Unit) {
         val url = "https://$userDomain/api/v2.6/combinator/$combinatorName"
         val bodyRequest = arrayListOf(BodyRequest())
 
@@ -75,18 +69,17 @@ class HATAccountService{
             bodyRequest[0].filters[0].transformation?.transformation = transformationType
         }
         val bodyJsonString = bodyRequestToJsonString(bodyRequest)
-        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to userToken)
-        Fuel.post(url).body(bodyJsonString).response { _, response, result ->
-            when (result) {
-                is Result.Failure -> {
-                    Log.i("resultFail", response.responseMessage + response.statusCode.toString())
-                    failCallback(response.responseMessage + response.statusCode.toString())
 
+        HATNetworkManager().postRequest(url,bodyJsonString, mapOf("Content-Type" to "application/json", "x-auth-token" to userToken)) {
+            when(it){
+                ResultType.IsSuccess->{
+                    successCallback(true, it.statusCode.toString())
                 }
-                is Result.Success -> {
-                    Log.i("resultSuccess", response.responseMessage + response.statusCode.toString())
-                    successCallback(true, response.statusCode.toString())
-
+                ResultType.HasFailed->{
+                    val e = HATError()
+                    e.errorCode = it?.statusCode
+                    e.errorMessage = it?.error?.localizedMessage
+                    failCallback(e)
                 }
             }
         }

@@ -154,7 +154,6 @@ open class HATService {
     }
 
     private fun getPublicKeyURL(userDomain: String): String {
-
         return "https://$userDomain/publickey"
     }
     // MARK: - Purchase
@@ -173,19 +172,16 @@ open class HATService {
         val mapper = jacksonObjectMapper()
         val purchaseJson = mapper.writeValueAsString(purchaseModel)
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
-        Fuel.post(url).body(purchaseJson).timeout(timeout).timeoutRead(timeoutRead).response { _, response, result ->
-                when (result) {
-                    is Result.Failure -> {
-                        val e =HATError()
-                        e.errorMessage = response.responseMessage
-                        e.errorCode = response.statusCode
-                        failCallBack(e)
-                    }
-                    is Result.Success -> {
-                        succesfulCallBack("result ok" , "")
-                    }
-                }
+        HATNetworkManager().postRequest(url,purchaseJson,mapOf("Content-Type" to "application/json")){
+            if(it?.statusCode == 200){
+                succesfulCallBack("result ok" , "")
+            } else {
+                val e =HATError()
+                e.errorMessage = it?.resultString
+                e.errorCode = it?.statusCode
+                failCallBack(e)
             }
+        }
     }
 
     // MARK: - Validate Data
@@ -200,17 +196,12 @@ open class HATService {
      */
     fun validateEmailAddress(email: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
         val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-email"
-        val parameters = listOf("address" to email, "cluster" to cluster)
-        Fuel.get(url, parameters).responseJson { _, response, result ->
-            when (result) {
-                is Result.Failure -> {
-                    failCallBack("HAT with such username already exists")
-                }
-                is Result.Success -> {
-                    if (response.statusCode == 200) {
-                        succesfulCallBack("valid address", "")
-                    }
-                }
+        val parameters = listOf("email" to email, "cluster" to cluster)
+        HATNetworkManager().getRequest(url,parameters,null){
+            if(it?.statusCode == 200){
+                succesfulCallBack("valid address", "")
+            } else {
+                failCallBack("HAT with such username already exists")
             }
         }
     }
@@ -223,21 +214,14 @@ open class HATService {
     - parameter succesfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun validateHATAddress(address: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Void) {
+    fun validateHATAddress(address: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
         val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-hat"
         val parameters = listOf("address" to address, "cluster" to cluster)
-        Fuel.get(url, parameters).responseJson { _, response, result ->
-            when (result) {
-                is Result.Failure -> {
-                    failCallBack("HAT with such username already exists")
-                    Log.i("usernameFail", response.statusCode.toString())
-                }
-                is Result.Success -> {
-                    if (response.statusCode == 200) {
-                        Log.i("usernameSuccess", response.statusCode.toString())
-                        succesfulCallBack("valid address", "")
-                    }
-                }
+        HATNetworkManager().getRequest(url,parameters,null){
+            if(it?.statusCode == 200){
+                succesfulCallBack("valid address", "")
+            } else {
+                failCallBack("HAT with such username already exists")
             }
         }
     }
@@ -251,7 +235,7 @@ open class HATService {
     - parameter succesfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun getSystemStatus(userDomain: String, userToken: String, completion: (List<HATSystemStatusObject>, String?) -> Unit, failCallBack: (HATError) -> Void) {
+    fun getSystemStatus(userDomain: String, userToken: String, completion: (List<HATSystemStatusObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url: String = "https://$userDomain/api/v2.6/system/status"
         val headers = mapOf("x-auth-token" to userToken)
 

@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android'
     gitUrl = 'https://github.com/whiteshadow-gr/HAT-API-Android.git'
 
-    libraryVersion = '0.0.28'
+    libraryVersion = '0.0.29.6'
 
     developerId = 'whiteshadow'
     developerName = 'Marios Tsekis'
@@ -115,7 +115,7 @@ task createPOM {
 
             groupId 'com.hubofallthings.HAT_API_Android'
             artifactId 'HAT_API_Android'
-            version '0.0.28'
+            version '0.0.29.6'
 
             inceptionYear '2018'
             licenses {

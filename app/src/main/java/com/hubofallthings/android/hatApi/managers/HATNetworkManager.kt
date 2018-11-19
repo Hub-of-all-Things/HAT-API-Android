@@ -11,7 +11,7 @@ import com.hubofallthings.android.hatApi.HATError
 
 interface NetworkLayer {
 
-    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
+    fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit)
     fun postRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
 
     fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
@@ -27,8 +27,9 @@ class HATNetworkManager: NetworkLayer {
 
     var resultType: ResultType? = null
 
-    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
 
+        if (headers!= null)
         FuelManager.instance.baseHeaders = headers
         Fuel.get(url, parameters).responseJson{ _, response, result ->
 
