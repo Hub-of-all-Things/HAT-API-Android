@@ -1,11 +1,21 @@
 package com.hubofallthings.android.hatApi.services
 
+import android.util.Log
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.android.extension.responseJson
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.result.Result
 import com.hubofallthings.android.hatApi.configuration.ContentType
 import com.hubofallthings.android.hatApi.configuration.TokenParameters
 import com.hubofallthings.android.hatApi.configuration.VerifiedDomains
 import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
+import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
+import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
+import com.hubofallthings.android.hatApi.objects.purchase.PurchaseObject
+import com.hubofallthings.android.hatApi.objects.systemStatus.HATSystemStatusObject
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWT
@@ -14,6 +24,8 @@ import com.nimbusds.jwt.SignedJWT
 import java.io.StringReader
 import java.security.interfaces.RSAPublicKey
 import org.bouncycastle.util.io.pem.PemReader
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 import java.security.KeyFactory
 import java.security.spec.X509EncodedKeySpec
@@ -145,4 +157,132 @@ open class HATService {
 
         return "https://$userDomain/publickey"
     }
+    // MARK: - Purchase
+
+    /**
+    Confirms the hat purchase
+
+    - parameter purchaseModel: The PurchaseObject to send to HAT
+    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter failCallBack: A function to call if fail
+     */
+    fun confirmHATPurchase(purchaseModel: PurchaseObject, succesfulCallBack: (String, String?) -> Unit, failCallBack:  (HATError) -> Unit){
+        val url =  "https://hatters.hubofallthings.com/api/products/hat/purchase"
+        val timeout = 60000 // 60 seconds.
+        val timeoutRead = 60000 // 60 seconds.
+        val mapper = jacksonObjectMapper()
+        val purchaseJson = mapper.writeValueAsString(purchaseModel)
+        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
+        Fuel.post(url).body(purchaseJson).timeout(timeout).timeoutRead(timeoutRead).response { _, response, result ->
+                when (result) {
+                    is Result.Failure -> {
+                        val e =HATError()
+                        e.errorMessage = response.responseMessage
+                        e.errorCode = response.statusCode
+                        failCallBack(e)
+                    }
+                    is Result.Success -> {
+                        succesfulCallBack("result ok" , "")
+                    }
+                }
+            }
+    }
+
+    // MARK: - Validate Data
+
+    /**
+    Validates email address with the HAT
+
+    - parameter email: The email to validate with the HAT
+    - parameter cluster: The cluster to validate the email with
+    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter failCallBack: A function to call if fail
+     */
+    fun validateEmailAddress(email: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
+        val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-email"
+        val parameters = listOf("address" to email, "cluster" to cluster)
+        Fuel.get(url, parameters).responseJson { _, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    failCallBack("HAT with such username already exists")
+                }
+                is Result.Success -> {
+                    if (response.statusCode == 200) {
+                        succesfulCallBack("valid address", "")
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+    Validates HAT address with HAT
+
+    - parameter address: The address to validate with the HAT
+    - parameter cluster: The cluster to validate the email with
+    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter failCallBack: A function to call if fail
+     */
+    fun validateHATAddress(address: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Void) {
+        val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-hat"
+        val parameters = listOf("address" to address, "cluster" to cluster)
+        Fuel.get(url, parameters).responseJson { _, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    failCallBack("HAT with such username already exists")
+                    Log.i("usernameFail", response.statusCode.toString())
+                }
+                is Result.Success -> {
+                    if (response.statusCode == 200) {
+                        Log.i("usernameSuccess", response.statusCode.toString())
+                        succesfulCallBack("valid address", "")
+                    }
+                }
+            }
+        }
+    }
+    // MARK: - Get system status
+
+    /**
+    Fetches all the info related to user's HAT
+
+    - parameter userDomain: The user's domain
+    - parameter userToken: The user's token
+    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter failCallBack: A function to call if fail
+     */
+    fun getSystemStatus(userDomain: String, userToken: String, completion: (List<HATSystemStatusObject>, String?) -> Unit, failCallBack: (HATError) -> Void) {
+        val url: String = "https://$userDomain/api/v2.6/system/status"
+        val headers = mapOf("x-auth-token" to userToken)
+
+        HATNetworkManager().getRequest(
+                url,
+                null,
+                headers) { r ->
+            when (r) {
+                ResultType.IsSuccess -> {
+                    if (r.statusCode != 401) {
+                        val json = r.json?.content
+                        doAsync {
+                            json?.let { jsonString ->
+                                val hatFeedObject = HATParserManager().jsonToObjectList(jsonString, HATSystemStatusObject::class.java)
+                                uiThread {
+                                    completion(hatFeedObject, r.token)
+                                }
+                            }
+                        }
+                    }
+                }
+                ResultType.HasFailed -> {
+                    val error = HATError()
+                    error.errorCode = r.statusCode
+                    error.errorMessage = r.resultString
+                    failCallBack(error)
+                }
+                null -> {
+                }
+            }
+        }
+    }
 }
+
