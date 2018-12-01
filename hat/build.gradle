@@ -1,0 +1,95 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'com.jfrog.bintray'
+
+apply plugin: 'com.github.dcendents.android-maven'
+
+ext {
+
+    bintrayName = 'com.hubofallthings.android.hatApi'
+    bintrayRepo = 'HAT-API-Android'
+
+    publishedGroupId = 'com.hubofallthings.android.hatApi'
+    libraryName = 'hat'
+    artifact = 'hat'
+
+    libraryDescription = 'Contains the basic APIs for exchanging data with the HAT'
+
+    siteUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android'
+    gitUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android.git'
+
+    libraryVersion = '0.0.29.7'
+
+    developerId = 'lizchandler'
+    developerName = 'Myteletsis Eleftherios'
+    developerEmail = 'developers@hatdex.org'
+
+    licenseName = 'MPL-2.0'
+    licenseUrl = 'https://opensource.org/licenses/MPL-2.0'
+    allLicenses = ["MPL-2.0"]
+}
+
+
+
+android {
+
+    compileSdkVersion 28
+    defaultConfig {
+
+        minSdkVersion 17
+        targetSdkVersion 28
+        versionCode 1
+        versionName  '0.0.29.7'
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            debuggable true
+            jniDebuggable true
+
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
+            minifyEnabled false
+        }
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation 'com.github.kittinunf.fuel:fuel-android:1.14.0' //for Android
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.4.1"
+    implementation 'com.auth0.android:jwtdecode:1.1.1'
+    implementation 'com.nimbusds:nimbus-jose-jwt:5.8'
+    implementation "org.jetbrains.anko:anko-commons:0.10.4"
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
+    androidTestImplementation 'junit:junit:4.12'
+}
+repositories{
+    mavenCentral()
+}
+
+if(project.rootProject.file('local.properties').exists()){
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
+    apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+}
