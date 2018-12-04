@@ -1,18 +1,19 @@
 package com.hubofallthings.android.hatApi.managers
 
 import android.net.UrlQuerySanitizer
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
-import com.hubofallthings.android.hatApi.HATError
 
 interface NetworkLayer {
 
     fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit)
     fun postRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
+    fun putRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
+    fun uploadRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
+    fun deleteRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
 
     fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
 }
@@ -144,7 +145,8 @@ class HATNetworkManager: NetworkLayer {
                     completion(resultType)
                 }
             }
-        }    }
+        }
+    }
     fun getQueryStringParameter(url: String?, param: String): String? {
 
         if (!url.isNullOrEmpty()) {
@@ -156,5 +158,110 @@ class HATNetworkManager: NetworkLayer {
         }
 
         return null
+    }
+
+    override fun putRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        FuelManager.instance.baseHeaders = headers
+
+        Fuel.put(url).body(body).responseJson { _, response, result ->
+            when (result){
+                is Result.Failure -> {
+                    val ex = result.getException()
+                    val error = Error(ex)
+                    val test = ResultType.HasFailed
+                    test.statusCode = response.statusCode
+                    test.error = error
+                    test.json = null
+                    test.resultString = null
+                    test.token = null
+
+                    resultType = test
+                    completion(resultType)
+                }
+                is Result.Success -> {
+                    val token = response.headers["X-Auth-Token"]?.last()
+                    val test2 = result.component1()
+                    val test = ResultType.IsSuccess
+                    test.statusCode = response.statusCode
+                    test.error = null
+                    test.json = test2
+                    test.resultString = null
+                    test.token = token
+
+                    resultType = test
+                    completion(resultType)
+                }
+            }
+        }
+    }
+
+    override fun uploadRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        FuelManager.instance.baseHeaders = headers
+
+        Fuel.upload(url).body(body).responseJson { _, response, result ->
+            when (result){
+                is Result.Failure -> {
+                    val ex = result.getException()
+                    val error = Error(ex)
+                    val test = ResultType.HasFailed
+                    test.statusCode = response.statusCode
+                    test.error = error
+                    test.json = null
+                    test.resultString = null
+                    test.token = null
+
+                    resultType = test
+                    completion(resultType)
+                }
+                is Result.Success -> {
+                    val token = response.headers["X-Auth-Token"]?.last()
+                    val test2 = result.component1()
+                    val test = ResultType.IsSuccess
+                    test.statusCode = response.statusCode
+                    test.error = null
+                    test.json = test2
+                    test.resultString = null
+                    test.token = token
+
+                    resultType = test
+                    completion(resultType)
+                }
+            }
+        }
+    }
+
+    override fun deleteRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        FuelManager.instance.baseHeaders = headers
+
+        Fuel.delete(url).body(body).responseJson { _, response, result ->
+            when (result){
+                is Result.Failure -> {
+                    val ex = result.getException()
+                    val error = Error(ex)
+                    val test = ResultType.HasFailed
+                    test.statusCode = response.statusCode
+                    test.error = error
+                    test.json = null
+                    test.resultString = null
+                    test.token = null
+
+                    resultType = test
+                    completion(resultType)
+                }
+                is Result.Success -> {
+                    val token = response.headers["X-Auth-Token"]?.last()
+                    val test2 = result.component1()
+                    val test = ResultType.IsSuccess
+                    test.statusCode = response.statusCode
+                    test.error = null
+                    test.json = test2
+                    test.resultString = null
+                    test.token = token
+
+                    resultType = test
+                    completion(resultType)
+                }
+            }
+        }
     }
 }

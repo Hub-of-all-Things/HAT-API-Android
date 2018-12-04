@@ -22,7 +22,7 @@ ext {
     siteUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android'
     gitUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android.git'
 
-    libraryVersion = '0.0.29.7'
+    libraryVersion = '0.0.30'
 
     developerId = 'lizchandler'
     developerName = 'Myteletsis Eleftherios'
@@ -43,7 +43,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName  '0.0.29.7'
+        versionName  '0.0.30'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }

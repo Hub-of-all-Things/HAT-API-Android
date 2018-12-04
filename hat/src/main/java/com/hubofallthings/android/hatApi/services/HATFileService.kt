@@ -10,6 +10,8 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
+import com.hubofallthings.android.hatApi.HATError
+import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.fileUploadObject.FileUploadObject
 import org.jetbrains.anko.doAsync
@@ -20,8 +22,55 @@ import java.io.IOException
 
 class HATFileService {
     private val TAG = HATFileService::class.java.simpleName
+    // MARK: - Search files
 
-    private fun uploadFileToHAT(
+    /**
+    Searches and returns the files we want
+
+    - parameter token: The authorisation token to authenticate with the hat
+    - parameter userDomain: The user's HAT domain
+    - parameter status: The status of the file, Completed or Deleted. Default value is Completed
+    - parameter name: The name of the file, default is ""
+    - parameter tags: The tags of the files, default is [""]
+    - parameter successCallback: An @escaping ([FileUploadObject]) -> Void function to execute when the server has returned the files we were looking for
+    - parameter errorCallBack: An @escaping (HATError) -> Void to execute when something went wrong
+     */
+    fun searchFiles(userDomain: String, token: String, status: String? = "Completed", name: String = "", tags: Array<String>? = arrayOf(""), successCallback: (List<FileUploadObject>, String?) -> Unit, errorCallBack: (HATError) -> Unit) {
+
+        val url = "https://$userDomain/api/v2.6/files/search"
+        val headers = mapOf("X-Auth-Token" to token)
+        val parameters = mapOf("source" to "Android", "name" to name, "status" to mapOf("status" to status, "size" to 0))
+//        HATNetworkManager().postRequest()
+    }
+    // MARK: - Delete File
+
+    /**
+    Deletes a file, with the specified ID, from the server
+
+    - parameter fileID: The ID of the file to delete
+    - parameter token: The authorisation token to authenticate with the hat
+    - parameter userDomain: The user's HAT domain
+    - parameter successCallback: An @escaping (Bool) -> Void function to execute when the file has been deleted
+    - parameter errorCallBack: An @escaping (HATError) -> Void to execute when something went wrong
+     */
+    fun deleteFile(fileID: String, token: String, userDomain: String, successCallback: (Boolean, String?) -> Unit, errorCallBack: (HATError) -> Unit) {
+
+        val url = "https://$userDomain/api/v2.6/files/file/$fileID"
+
+    }
+
+    // MARK: - Upload File to hat
+
+    /**
+    Uploads a file to hat
+
+    - parameter fileName: The file name of the file to be uploaded
+    - parameter token: The owner's token
+    - parameter userDomain: The user hat domain
+    - parameter completion: A function to execute on success, returning the object returned from the server
+    - parameter errorCallback: A function to execute on failure, returning an error
+     */
+    fun uploadFileToHAT(
             fileName: String,
             token: String,
             userDomain: String,
@@ -47,13 +96,13 @@ class HATFileService {
                 is Result.Success -> {
                     Log.i(TAG, "success")
                     Log.i(TAG, response.responseMessage + response.statusCode.toString())
-                    if (! result.component1().isNullOrEmpty()) {
+                    if (!result.component1().isNullOrEmpty()) {
                         if (result.component1() != null) {
                             val jsonString = result.component1()
                             doAsync {
                                 val fileObject = jsonString?.toKotlinObject<FileUploadObject>()
                                 uiThread {
-                                    if(fileObject!=null){
+                                    if (fileObject != null) {
                                         completion(fileObject, "")
                                     }
                                 }
@@ -68,13 +117,13 @@ class HATFileService {
     }
 
     private fun uploadFile(
-        image: File,
-        contentUrl: String,
-        completion: (String) -> Unit,
-        errorCallback: (FuelError) -> Unit) {
+            image: File,
+            contentUrl: String,
+            completion: (String) -> Unit,
+            errorCallback: (FuelError) -> Unit) {
 
         FuelManager.instance.baseHeaders = mapOf("x-amz-server-side-encryption" to "AES256")
-        Fuel.put(contentUrl).body(image.readBytes()).responseString{_, response, result ->
+        Fuel.put(contentUrl).body(image.readBytes()).responseString { _, response, result ->
             when (result) {
                 is Result.Failure -> {
                     Log.i(TAG, "Uploadfailed")
@@ -95,35 +144,24 @@ class HATFileService {
 
     }
 
-    @Throws(IOException::class)
-    private fun fullyReadFileToBytes(f: File): ByteArray {
-        val size = f.length().toInt()
-        val bytes = ByteArray(size)
-        val tmpBuff = ByteArray(size)
-        val fis = FileInputStream(f)
-        try {
-            var read = fis.read(bytes, 0, size)
-            if (read < size) {
-                var remain = size - read
-                while (remain > 0) {
-                    read = fis.read(tmpBuff, 0, remain)
-                    System.arraycopy(tmpBuff, 0, bytes, size - remain, read)
-                    remain -= read
-                }
-            }
-        } catch (e: IOException) {
-            throw e
-        } finally {
-            fis.close()
-        }
-        return bytes
-    }
+    // MARK: - Complete Upload File to hat
+
+    /**
+    Completes an upload of a file to hat
+
+    - parameter fileID: The fileID of the file uploaded to hat
+    - parameter token: The owner's token
+    - parameter tags: An array of strings having the tags to add to the file
+    - parameter userDomain: The user hat domain
+    - parameter completion: A function to execute on success, returning the object returned from the server
+    - parameter errorCallback: A function to execute on failure, returning an error
+     */
     private fun completeUploadFileToHAT(
-        fileID: String,
-        token: String,
-        userDomain: String,
-        completion: (FileUploadObject, String?) -> Unit,
-        errorCallback: (FuelError) -> Unit
+            fileID: String,
+            token: String,
+            userDomain: String,
+            completion: (FileUploadObject, String?) -> Unit,
+            errorCallback: (FuelError) -> Unit
     ) {
         // create the url
         val uploadURL = "https://$userDomain/api/v2.6/files/file/$fileID/complete"
@@ -144,7 +182,7 @@ class HATFileService {
                         doAsync {
                             val fileObject = jsonString?.toKotlinObject<FileUploadObject>()
                             uiThread {
-                                if(fileObject!=null){
+                                if (fileObject != null) {
                                     completion(fileObject, "")
                                 }
                             }
@@ -156,6 +194,17 @@ class HATFileService {
             }
         }
     }
+    // MARK: - Change File to Public or Private
+
+    /**
+    Makes an already uploaded file public
+
+    - parameter fileID: The ID of the file to change
+    - parameter token: The authorisation token to authenticate with the hat
+    - parameter userDomain: The user's HAT domain
+    - parameter successCallback: An @escaping (Bool) -> Void function to execute when the file has been made public
+    - parameter errorCallBack: An @escaping (HATError) -> Void to execute when something went wrong
+     */
     fun makeFilePublic(
             fileID: String,
             token: String,
@@ -190,30 +239,78 @@ class HATFileService {
         }
     }
 
-        /**
-        Creates the json file to purchase a HAT
+    /**
+    Makes an already uploaded file private
 
-        - parameter fileName: The file name of the photo
-        - parameter tags: The tags attached to the photo
-        - returns: A Map <String, Any>
-         */
-        private fun createFileUploadingJSONFrom(fileName: String): Map<String, Any> {
-            // the final JSON file to be returned
-            return mapOf("name" to fileName, "source" to "rumpel", "tags" to listOf("android", "image/jpeg"))
+    - parameter fileID: The ID of the file to change
+    - parameter token: The authorisation token to authenticate with the hat
+    - parameter userDomain: The user's HAT domain
+    - parameter successCallback: An @escaping (Bool) -> Void function to execute when the file has been made private
+    - parameter errorCallBack: An @escaping (HATError) -> Void to execute when something went wrong
+     */
+    fun makeFilePrivate(fileID: String, token: String, userDomain: String, successCallback: (Boolean) -> Unit, errorCallBack: (HATError) -> Unit) {
+        val url: String = "https://$userDomain/api/v2.6/files/restrictAccessPublic/$fileID"
+        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
+        Fuel.get(url).responseString { request, response, result ->
+            when (result) {
+                is Result.Failure -> {
+                    val e = HATError()
+                    e.errorMessage = response.responseMessage
+                    e.errorCode = response.statusCode
+                    errorCallBack(e)
+
+                }
+                is Result.Success -> {
+                    if (response.statusCode == 200) {
+                        successCallback(true)
+                    }
+                }
+                else -> {
+                }
+            }
+
         }
 
-        fun uploadFileToHATWrapper(
+    }
+
+    /**
+    Creates the json file to purchase a HAT
+
+    - parameter fileName: The file name of the photo
+    - parameter tags: The tags attached to the photo
+    - returns: A Map <String, Any>
+     */
+    private fun createFileUploadingJSONFrom(fileName: String): Map<String, Any> {
+        // the final JSON file to be returned
+        return mapOf("name" to fileName, "source" to "rumpel", "tags" to listOf("android", "image/jpeg"))
+    }
+
+    // MARK: - Upload file to hat wrapper
+
+    /**
+    Uploads a file to HAT
+
+    - parameter token: The user's token
+    - parameter userDomain: The user's domain
+    - parameter fileToUpload: The image to upload
+    - parameter tags: The tags to attach to the image
+    - parameter name: The name of the file, defauls it rumpelPhoto
+    - parameter progressUpdater: A function to execute on the progress of the upload is moving forward
+    - parameter completion: A function to execute on success
+    - parameter errorCallBack: A Function to execute on failure
+     */
+    fun uploadFileToHATWrapper(
             token: String,
             userDomain: String,
             fileToUpload: File,
             name: String,
             completion: ((FileUploadObject, String) -> Unit)?,
             errorCallBack: ((FuelError) -> Unit)?
-        ) {
+    ) {
 
-            uploadFileToHAT(name, token, userDomain, { fileUploadObject, _ ->
-                uploadFile(fileToUpload, fileUploadObject.contentUrl, { _ ->
-                    completeUploadFileToHAT(
+        uploadFileToHAT(name, token, userDomain, { fileUploadObject, _ ->
+            uploadFile(fileToUpload, fileUploadObject.contentUrl, { _ ->
+                completeUploadFileToHAT(
                         fileUploadObject.fileId,
                         token,
                         userDomain,
@@ -229,17 +326,17 @@ class HATFileService {
                                 errorCallBack(errorResult)
                             }
                         })
-                }, { errorResult ->
-                    if (errorCallBack != null) {
-                        errorCallBack(errorResult)
-                    }
-                }
-                )
             }, { errorResult ->
                 if (errorCallBack != null) {
                     errorCallBack(errorResult)
                 }
             }
             )
+        }, { errorResult ->
+            if (errorCallBack != null) {
+                errorCallBack(errorResult)
+            }
         }
+        )
     }
+}
