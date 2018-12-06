@@ -50,7 +50,7 @@ data class DataOfferObject(
                 /// The owner of the offer
         var owner: DataOfferOwnerObject,
                 /// The claim object of the offer
-        var claim: DataOfferClaimObject,
+        var claim: DataOfferClaimObject?,
 
         @JsonProperty("illustrationUrl") var imageUrl : String?,
 

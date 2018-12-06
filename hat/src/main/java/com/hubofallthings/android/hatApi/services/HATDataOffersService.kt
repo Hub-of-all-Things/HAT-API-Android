@@ -21,12 +21,53 @@ class HATDataOffersService {
     - parameter succesfulCallBack: A function of type ([DataOfferObject], String?) -> Void, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
      */
-    fun getAvailableDataOffers(userDomain: String, userToken: String,application : String, merchants: Array<String>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+    fun getAvailableDataOffers(userDomain: String, userToken: String,application : String,merchants: List<Pair<String,Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        val url = "https://$userDomain/api/v2.6/applications/$application/proxy/api/v2/offers"
+        val headers = mapOf("x-auth-token" to userToken)
+        HATNetworkManager().getRequest(
+                url,
+                merchants,
+                headers) { r ->
+            when (r) {
+                ResultType.IsSuccess -> {
+                    if (r.statusCode != 401) {
+                        val json = r.json!!.content
+                        doAsync {
+                            val dataOfferObject = HATParserManager().jsonToObjectList(json, DataOfferObject::class.java)
+                            uiThread {
+                                successfulCallBack(dataOfferObject, r.token)
+                            }
+                        }
+                    }
+                }
+                ResultType.HasFailed -> {
+                    val error = HATError()
+                    error.errorCode = r.statusCode
+                    error.errorMessage = r.resultString
+                    failCallBack(error)
+                }
+                null -> {
+                }
+            }
+        }
+    }
+    // MARK: - Get available data offers with claims
+
+    /**
+    Gets the available data offers based on the merchants requested
+
+    - parameter userDomain: The user's domain
+    - parameter userToken: The user's token
+    - parameter merchants: The merchants to get the offers from
+    - parameter succesfulCallBack: A function of type ([DataOfferObject], String?) -> Void, executed on a successful result
+    - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
+     */
+    fun getAvailableDataOffersWithClaims(userDomain: String, userToken: String,application : String, merchants: List<Pair<String,Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url = "https://$userDomain/api/v2.6/applications/$application/proxy/api/v2/offersWithClaims"
         val headers = mapOf("x-auth-token" to userToken)
         HATNetworkManager().getRequest(
                 url,
-                null,
+                merchants,
                 headers) { r ->
             when (r) {
                 ResultType.IsSuccess -> {
