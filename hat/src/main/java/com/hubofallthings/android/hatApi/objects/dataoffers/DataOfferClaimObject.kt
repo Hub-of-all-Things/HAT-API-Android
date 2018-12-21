@@ -14,5 +14,5 @@ data class DataOfferClaimObject(
         @JsonProperty("confirmed") var claimConfirmed: Boolean = false,
         /// The data offer claim unix time stamp
         @JsonProperty("dateCreated") var claimDateStamp: String = "",
-        var dataDebitID: String = ""
+        @JsonProperty("dataDebitId") var dataDebitID: String = ""
 ): Serializable

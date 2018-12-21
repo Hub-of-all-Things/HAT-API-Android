@@ -113,11 +113,17 @@ class HATDataOffersService {
             when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        val json = r.json!!.content
+                        val json = r.json
                         doAsync {
-                            val dataOfferObject = HATParserManager().jsonToObjectList(json, DataOfferObject::class.java)
-                            uiThread {
-                                successfulCallBack(offerID, r.token)
+                            if (json?.array()?.length()!! > 0) {
+                                val jObject = json.array().getJSONObject(0)
+                                val dataDebitId = jObject.getString("dataDebitId")
+//                            val dataOfferObject = HATParserManager().jsonToObjectList(json, DataOfferObject::class.java)
+                                uiThread {
+                                    if (!dataDebitId.isNullOrEmpty()) {
+                                        successfulCallBack(dataDebitId, r.token)
+                                    }
+                                }
                             }
                         }
                     }
