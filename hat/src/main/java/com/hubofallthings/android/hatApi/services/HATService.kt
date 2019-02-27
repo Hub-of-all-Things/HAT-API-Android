@@ -167,11 +167,8 @@ open class HATService {
      */
     fun confirmHATPurchase(purchaseModel: PurchaseObject, succesfulCallBack: (String, String?) -> Unit, failCallBack:  (HATError) -> Unit){
         val url =  "https://hatters.hubofallthings.com/api/products/hat/purchase"
-        val timeout = 60000 // 60 seconds.
-        val timeoutRead = 60000 // 60 seconds.
         val mapper = jacksonObjectMapper()
         val purchaseJson = mapper.writeValueAsString(purchaseModel)
-        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
         HATNetworkManager().postRequest(url,purchaseJson,mapOf("Content-Type" to "application/json")){
             if(it?.statusCode == 200){
                 succesfulCallBack("result ok" , "")

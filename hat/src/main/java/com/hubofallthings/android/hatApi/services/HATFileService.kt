@@ -55,7 +55,7 @@ class HATFileService {
      */
     fun deleteFile(fileID: String, token: String, userDomain: String, successCallback: (Boolean, String?) -> Unit, errorCallBack: (HATError) -> Unit) {
 
-        val url = "https://$userDomain/api/v2.6/files/file/$fileID"
+//        val url = "https://$userDomain/api/v2.6/files/file/$fileID"
 
     }
 
@@ -214,7 +214,7 @@ class HATFileService {
         // create the url
         val uploadURL = "https://$userDomain/api/v2.6/files/allowAccessPublic/$fileID"
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
-        Fuel.get(uploadURL).responseString { request, response, result ->
+        Fuel.get(uploadURL).responseString { _, response, result ->
             when (result) {
                 is Result.Failure -> {
                     Log.i(TAG, "Public failed")
@@ -251,7 +251,7 @@ class HATFileService {
     fun makeFilePrivate(fileID: String, token: String, userDomain: String, successCallback: (Boolean) -> Unit, errorCallBack: (HATError) -> Unit) {
         val url: String = "https://$userDomain/api/v2.6/files/restrictAccessPublic/$fileID"
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
-        Fuel.get(url).responseString { request, response, result ->
+        Fuel.get(url).responseString { _, response, result ->
             when (result) {
                 is Result.Failure -> {
                     val e = HATError()
