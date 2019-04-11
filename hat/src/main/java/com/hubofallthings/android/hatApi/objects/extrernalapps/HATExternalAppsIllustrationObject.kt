@@ -14,4 +14,4 @@ data class HATExternalAppsIllustrationObject(
         val large: String? = null,
         // The extra large dimensions image
         val xlarge: String? = null
-): Serializable
+) : Serializable

@@ -1,12 +1,9 @@
 package com.hubofallthings.android.hatApi
 
-
 import com.github.kittinunf.fuel.android.core.Json
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.NetworkLayer
 import com.hubofallthings.android.hatApi.managers.ResultType
-import org.junit.Test
-import org.junit.Assert.assertTrue
 
 class HATNetworkManagerTest: NetworkLayer {
 
@@ -72,7 +69,7 @@ class HATNetworkManagerTest: NetworkLayer {
 
         val url = "hatapp://hatapphost?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiIxLXRqWlA3cHdkaFVSaXdDMHE2YjltS1ZTdDNHVXVCZmtYRDNLNHFlXC9xaFhKNXlHblFpNG9IU0FMU0hnbCtQZzI0eDlqYXZ5SWJ5N3pGUTA0WHVBSFJTZHUrTWc4MWRMbTBXaWNSM0E9PSIsInJlc291cmNlIjoibGV5bXl0ZWwuaHViYXQubmV0IiwiYWNjZXNzU2NvcGUiOiJvd25lciIsImlzcyI6ImxleW15dGVsLmh1YmF0Lm5ldCIsImV4cCI6MTUyNzA5OTc2OSwiaWF0IjoxNTI0NTA3NzY5LCJqdGkiOiI0NjllODZlOTQxNjQ3MjM4NTUxOTVmM2JmZTEyYTFmMDViNmI2MDdjODhiZjIzZDhiZGYxYzIzNzJhNTU3YTMxYzM3ODViODZlYmVjYTMwMmJlZjlmZjYyYzEzZGU1MTllZTVlN2JmNDRlY2Y1YzEyODcyNmYzODhjOGJjMWYyM2FmOWM5MDI0YjliZjlmYThjMDEzZGIwMTYyM2UzZWUxNDU3OWEwMTRiN2UxZTNhYTYxNGQ2MTAyYmU5Mzk5N2NmZTIyYzZiYzg5OWRjYzZmMDZiZmNmY2I5Njc5OTgyNWM4ZGM3YTZkNDY1ZmQxYzhkNzRhNmQ3MTAxMzAxMWUwIn0.hsFTG6NQAVi8XEag0o4nITEW0x3KNgK3Ij8JotaKl2y_Jxgzu0aLZy1lc7nZ-MYQFUkK0Q164QJDdseAg_euw1Y3IfaNbnfvoU4pk8A9887YDAVfaX2BK-If7wbYdY-h8ZLwyUHlJuBBCJarCS-yLsbkb0069DRKxW6M9TIxl4u2mtdRUAoPwzqQFqbl7S0vFAbwZQleB0zlnkrKFbqlI7WbSUMTDLK7MnOjcm0LssuT-BZsQ1TFZqWV6xdgy-rGevWnJcHZ32IFsruSBk2eTey4z47e-g-WSVFFdnzs-PqvkmBzR_Jt8e1ZL-jpesrr1pjujqEH3mTKQVk-sjdu6g"
 
-        val token= HATNetworkManager().getQueryStringParameter(url, "token")
+        val token = HATNetworkManager().getQueryStringParameter(url, "token")
 
         assertTrue(token.equals(expectedToken))
     }

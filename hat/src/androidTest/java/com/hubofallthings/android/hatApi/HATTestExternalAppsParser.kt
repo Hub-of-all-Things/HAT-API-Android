@@ -6,7 +6,7 @@ import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObj
 import org.junit.Assert
 import org.junit.Test
 
-class HATTestExternalAppsParser{
+class HATTestExternalAppsParser {
     val externalApp = """{
     "application": {
         "id": "spotify",
@@ -124,7 +124,7 @@ class HATTestExternalAppsParser{
 }"""
 
     @Test
-    fun testParseApp(){
+    fun testParseApp() {
         val externalAppObj = externalApp.toKotlinObject<HATApplicationObject?>()
         val expectedAppID = "spotify"
         Assert.assertEquals(expectedAppID, externalAppObj?.application?.id)
@@ -133,10 +133,11 @@ class HATTestExternalAppsParser{
         val expectedKind = "DataPlug"
         Assert.assertEquals(expectedKind, externalAppObj?.application?.kind?.kind)
         val expectedEnabled = true
-        Assert.assertEquals(expectedEnabled,  externalAppObj?.enabled)
+        Assert.assertEquals(expectedEnabled, externalAppObj?.enabled)
     }
+
     @Test
-    fun testParseAppsList(){
+    fun testParseAppsList() {
         val externalAppObj = HATParserManager().jsonToObjectList(externalApp, HATApplicationObject::class.java)
         val expectedAppID = "spotify"
         Assert.assertEquals(expectedAppID, externalAppObj.get(0).application?.id)
@@ -145,6 +146,6 @@ class HATTestExternalAppsParser{
         val expectedKind = "DataPlug"
         Assert.assertEquals(expectedKind, externalAppObj.get(0).application?.kind?.kind)
         val expectedEnabled = true
-        Assert.assertEquals(expectedEnabled,  externalAppObj.get(0).enabled)
+        Assert.assertEquals(expectedEnabled, externalAppObj.get(0).enabled)
     }
 }

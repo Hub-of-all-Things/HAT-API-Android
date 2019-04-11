@@ -9,10 +9,10 @@ import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-interface FeedService{
-    fun getFeed(userDomain : String, userToken : String, parameters : List<Pair<String, Any>>?, hatSuffix: String = "", completion: ((List<HATFeedObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+interface FeedService {
+    fun getFeed(userDomain: String, userToken: String, parameters: List<Pair<String, Any>>?, hatSuffix: String = "", completion: ((List<HATFeedObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
 }
-class HATFeedService : FeedService{
+class HATFeedService : FeedService {
     // MARK: - Get feed
 
     /**
@@ -24,7 +24,7 @@ class HATFeedService : FeedService{
     - parameter successCallback: A function of type (List<HATFeedObject>?, String?) that executes on success
     - parameter failed: A function of type (HATTableError) that executes on failure
      */
-    override fun getFeed(userDomain : String, userToken : String, parameters : List<Pair<String, Any>>?, hatSuffix: String, completion: ((List<HATFeedObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun getFeed(userDomain: String, userToken: String, parameters: List<Pair<String, Any>>?, hatSuffix: String, completion: ((List<HATFeedObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/feed$hatSuffix"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -32,15 +32,15 @@ class HATFeedService : FeedService{
                 url,
                 parameters,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json?.content
                         doAsync {
                             json?.let { jsonString ->
-                                val hatFeedObject = HATParserManager().jsonToObjectList(jsonString,HATFeedObject::class.java)
-                                uiThread{
-                                    completion(hatFeedObject,r.token)
+                                val hatFeedObject = HATParserManager().jsonToObjectList(jsonString, HATFeedObject::class.java)
+                                uiThread {
+                                    completion(hatFeedObject, r.token)
                                 }
                             }
                         }
@@ -52,7 +52,8 @@ class HATFeedService : FeedService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }

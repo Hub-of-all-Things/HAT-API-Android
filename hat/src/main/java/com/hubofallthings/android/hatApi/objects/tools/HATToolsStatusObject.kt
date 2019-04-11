@@ -7,4 +7,4 @@ data class HATToolsStatusObject(
     var enabled: Boolean = false,
     var lastExecution: String?,
     var executionStarted: String?
-): Serializable
+) : Serializable

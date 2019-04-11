@@ -9,4 +9,4 @@ data class HATToolsObject(
         var status: HATToolsStatusObject,
         var dataBundle: HATToolsDataBundleObject,
         var trigger: HATToolsTriggerObject
-): Serializable
+) : Serializable

@@ -6,17 +6,16 @@ import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
-import com.hubofallthings.android.hatApi.objects.BodyRequest
 import com.hubofallthings.android.hatApi.objects.datadebits.HATDataDebitCreationObject
 import com.hubofallthings.android.hatApi.objects.datadebits.HATDataDebitObject
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-interface DataDebitService{
-    fun getAvailableDataDebits(userToken : String, userDomain : String, completion: ((List<HATDataDebitObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun disableDataDebit(userToken : String, userDomain : String, dataDebitID: String, completion: ((HATDataDebitObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+interface DataDebitService {
+    fun getAvailableDataDebits(userToken: String, userDomain: String, completion: ((List<HATDataDebitObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun disableDataDebit(userToken: String, userDomain: String, dataDebitID: String, completion: ((HATDataDebitObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
 }
-class HATDataDebitService: DataDebitService{
+class HATDataDebitService: DataDebitService {
 
     // MARK: Get Data Debits
 
@@ -36,14 +35,14 @@ class HATDataDebitService: DataDebitService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val dataDebitObject = HATParserManager().jsonToObjectList(json, HATDataDebitObject::class.java)
-                            uiThread{
-                                completion(dataDebitObject,r.token)
+                            uiThread {
+                                completion(dataDebitObject, r.token)
                             }
                         }
                     }
@@ -54,10 +53,12 @@ class HATDataDebitService: DataDebitService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Gets the available data debits for the user
 
@@ -66,8 +67,8 @@ class HATDataDebitService: DataDebitService{
     - parameter succesfulCallBack: A function of type (DataDebitObject) -> Unit, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Unit, executed on an unsuccessful result
      */
-    fun getDataDebit(dataDebitID: String, userToken: String, userDomain: String, successfulCallBack:  (HATDataDebitObject, String?) -> Unit, failCallBack:  (HATError) -> Unit) {
-        if(dataDebitID.isEmpty()){
+    fun getDataDebit(dataDebitID: String, userToken: String, userDomain: String, successfulCallBack: (HATDataDebitObject, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        if (dataDebitID.isEmpty()) {
             val e = HATError()
             e.errorCode = 400
             e.errorMessage = "Data Debit ID is empty"
@@ -81,14 +82,14 @@ class HATDataDebitService: DataDebitService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val dataDebitObject = json.toKotlinObject<HATDataDebitObject>()
-                            uiThread{
-                                successfulCallBack(dataDebitObject,r.token)
+                            uiThread {
+                                successfulCallBack(dataDebitObject, r.token)
                             }
                         }
                     }
@@ -99,10 +100,12 @@ class HATDataDebitService: DataDebitService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Gets the data debit values
 
@@ -112,7 +115,7 @@ class HATDataDebitService: DataDebitService{
     - parameter succesfulCallBack: A function of type (DataDebitValuesObject) -> Void, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
      */
-    fun getDataDebitValues(dataDebitID: String, userToken: String, userDomain: String, successfulCallBack: (HATDataDebitObject, String?) -> Unit, failCallBack:  (HATError, String) -> Unit) {
+    fun getDataDebitValues(dataDebitID: String, userToken: String, userDomain: String, successfulCallBack: (HATDataDebitObject, String?) -> Unit, failCallBack: (HATError, String) -> Unit) {
         val url = "https://$userDomain/api/v2.6/data-debit/$dataDebitID/values"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -120,14 +123,14 @@ class HATDataDebitService: DataDebitService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val dataDebitObject = json.toKotlinObject<HATDataDebitObject>()
-                            uiThread{
-                                successfulCallBack(dataDebitObject,r.token)
+                            uiThread {
+                                successfulCallBack(dataDebitObject, r.token)
                             }
                         }
                     }
@@ -136,16 +139,16 @@ class HATDataDebitService: DataDebitService{
                     val error = HATError()
                     error.errorCode = r.statusCode
                     error.errorMessage = r.resultString
-                    failCallBack(error,dataDebitID)
+                    failCallBack(error, dataDebitID)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
 
 
-
-        // MARK: - Disable data debit
+    // MARK: - Disable data debit
 
     /**
     Disables the specified data debit
@@ -164,14 +167,14 @@ class HATDataDebitService: DataDebitService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val dataDebit = json.toKotlinObject<HATDataDebitObject?>()
-                            uiThread{
-                                completion(dataDebit,r.token)
+                            uiThread {
+                                completion(dataDebit, r.token)
                             }
                         }
                     }
@@ -182,7 +185,8 @@ class HATDataDebitService: DataDebitService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
@@ -198,8 +202,8 @@ class HATDataDebitService: DataDebitService{
     - parameter succesfulCallBack: A function of type (DataDebitObject) -> Void, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
      */
-    fun createDataDebit(dataDebitID: String, bundle: HATDataDebitCreationObject, userToken: String, userDomain: String, successfulCallBack:  (HATDataDebitObject, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        if(dataDebitID.isEmpty()){
+    fun createDataDebit(dataDebitID: String, bundle: HATDataDebitCreationObject, userToken: String, userDomain: String, successfulCallBack: (HATDataDebitObject, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        if (dataDebitID.isEmpty()) {
             val e = HATError()
             e.errorCode = 400
             e.errorMessage = "Data Debit ID is empty"
@@ -207,20 +211,20 @@ class HATDataDebitService: DataDebitService{
             return
         }
         val url = "https://$userDomain/api/v2.6/data-debit/$dataDebitID"
-        val headers = mapOf("Content-Type" to "application/json","x-auth-token" to userToken)
+        val headers = mapOf("Content-Type" to "application/json", "x-auth-token" to userToken)
         val data = dataDebitCreationObjecttToJsonString(bundle)
         HATNetworkManager().postRequest(
                 url,
                 data,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val dataDebitObject = json.toKotlinObject<HATDataDebitObject>()
-                            uiThread{
-                                successfulCallBack(dataDebitObject,r.token)
+                            uiThread {
+                                successfulCallBack(dataDebitObject, r.token)
                             }
                         }
                     }
@@ -231,11 +235,11 @@ class HATDataDebitService: DataDebitService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
-
 
     private fun dataDebitCreationObjecttToJsonString(body: HATDataDebitCreationObject): String {
         val mapper = jacksonObjectMapper()

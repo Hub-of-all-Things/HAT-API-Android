@@ -5,5 +5,5 @@ import java.io.Serializable
 
 data class HATToolsGraphicsObject(
         var logo: HATExternalAppsIllustrationObject,
-        var screenshots :  Array<HATExternalAppsIllustrationObject>
-): Serializable
+        var screenshots:  Array<HATExternalAppsIllustrationObject>
+) : Serializable

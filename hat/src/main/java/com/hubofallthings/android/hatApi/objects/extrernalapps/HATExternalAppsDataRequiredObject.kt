@@ -11,7 +11,7 @@ data class HATExternalAppsDataRequiredObject(
         val rolling: Boolean = false,
         // The bundle info definition for this app
         @JsonSetter(nulls = Nulls.AS_EMPTY)
-         val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
+        val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
         val startDate: String? = null,
         val endDate: String? = null
-): Serializable
+) : Serializable

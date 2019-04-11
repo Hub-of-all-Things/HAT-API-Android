@@ -7,4 +7,4 @@ data class HATExternalAppsInfoDeveloperObject(
     var name: String = "",
     var url: String = "",
     var country: String = ""
-): Serializable
+) : Serializable

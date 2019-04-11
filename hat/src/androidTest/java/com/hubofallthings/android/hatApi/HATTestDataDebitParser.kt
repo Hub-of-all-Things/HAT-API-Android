@@ -7,7 +7,7 @@ import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObj
 import org.junit.Assert
 import org.junit.Test
 
-class HATTestDataDebitParser{
+class HATTestDataDebitParser {
     val dataDebitJson = """{
         "dataDebitKey": "2534fdfw-fasfas-fas-fas-fas-fas-f",
         "dateCreated": "2018-01-02T15:22:42+0000",
@@ -133,8 +133,9 @@ class HATTestDataDebitParser{
         }
         }
     """
+
     @Test
-    fun testParseDataDebitList(){
+    fun testParseDataDebitList() {
         val dataDebitObj = HATParserManager().jsonToObjectList(dataDebitJson, HATDataDebitObject::class.java)
         val expectedDebitKey = "2534fdfw-fasfas-fas-fas-fas-fas-f"
         Assert.assertEquals(expectedDebitKey, dataDebitObj.get(0).dataDebitKey)
@@ -143,10 +144,11 @@ class HATTestDataDebitParser{
         val expectedEnd = "2018-01-03T15:23:02.000Z"
         Assert.assertEquals(expectedEnd, dataDebitObj.get(0).end)
         val expectedActive = false
-        Assert.assertEquals(expectedActive,  dataDebitObj.get(0).active)
+        Assert.assertEquals(expectedActive, dataDebitObj.get(0).active)
     }
+
     @Test
-    fun testParseDataDebit(){
+    fun testParseDataDebit() {
         val dataDebitObj = dataDebitJson.toKotlinObject<HATDataDebitObject?>()
         val expectedDebitKey = "2534fdfw-fasfas-fas-fas-fas-fas-f"
         Assert.assertEquals(expectedDebitKey, dataDebitObj?.dataDebitKey)
@@ -155,6 +157,6 @@ class HATTestDataDebitParser{
         val expectedEnd = "2018-01-03T15:23:02.000Z"
         Assert.assertEquals(expectedEnd, dataDebitObj.end)
         val expectedActive = false
-        Assert.assertEquals(expectedActive,  dataDebitObj.active)
+        Assert.assertEquals(expectedActive, dataDebitObj.active)
     }
 }

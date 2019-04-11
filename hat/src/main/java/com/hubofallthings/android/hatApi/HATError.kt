@@ -28,7 +28,7 @@ class HATError: Exception() {
         } else if (errorCode == 403) {
 
             this.exceptionType = ExceptionType.Forbidden
-        } else if  (errorCode == 400) {
+        } else if (errorCode == 400) {
 
             this.exceptionType = ExceptionType.BadRequest
         } else {

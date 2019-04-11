@@ -1,21 +1,14 @@
 package com.hubofallthings.android.hatApi.services
 
-import android.util.Log
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.result.Result
 import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
-import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
 import com.hubofallthings.android.hatApi.objects.BodyRequest
 import com.hubofallthings.android.hatApi.objects.Transformation
-import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObject
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
 
-class HATAccountService{
+class HATAccountService {
     // MARK: - Reset Password
 
     /**
@@ -26,17 +19,17 @@ class HATAccountService{
     - parameter successCallback: A function of type (String, String?) to call on success
     - parameter failCallback: A fuction of type (HATError) to call on fail
      */
-    fun resetPassword(userDomain: String, email: String, successCallback:  (String?) -> Unit, failCallback:  (HATError) -> Unit) {
-        val url =  "https://$userDomain/control/v2/auth/passwordReset"
+    fun resetPassword(userDomain: String, email: String, successCallback: (String?) -> Unit, failCallback: (HATError) -> Unit) {
+        val url = "https://$userDomain/control/v2/auth/passwordReset"
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
 
         val mapper = jacksonObjectMapper()
         val passwordResetBody = mapper.writeValueAsString(mapOf("email" to email))
 
-        HATNetworkManager().postRequest(url,passwordResetBody,mapOf("Content-Type" to "application/json")) {
-            if(it?.statusCode == 200){
+        HATNetworkManager().postRequest(url, passwordResetBody, mapOf("Content-Type" to "application/json")) {
+            if (it?.statusCode == 200) {
                 successCallback(it.token)
-            } else{
+            } else {
                 val e = HATError()
                 e.errorCode = it?.statusCode
                 e.errorMessage = it?.error?.localizedMessage
@@ -74,12 +67,12 @@ class HATAccountService{
         }
         val bodyJsonString = bodyRequestToJsonString(bodyRequest)
 
-        HATNetworkManager().postRequest(url,bodyJsonString, mapOf("Content-Type" to "application/json", "x-auth-token" to userToken)) {
-            when(it){
-                ResultType.IsSuccess->{
+        HATNetworkManager().postRequest(url, bodyJsonString, mapOf("Content-Type" to "application/json", "x-auth-token" to userToken)) {
+            when (it) {
+                ResultType.IsSuccess -> {
                     successCallback(true, it.statusCode.toString())
                 }
-                ResultType.HasFailed->{
+                ResultType.HasFailed -> {
                     val e = HATError()
                     e.errorCode = it?.statusCode
                     e.errorMessage = it?.error?.localizedMessage
@@ -101,20 +94,20 @@ class HATAccountService{
     - parameter success: A callback called when the request was successful of type @escaping (String) -> Void
     - parameter failed: A callback called when the request failed of type @escaping (HATTableError) -> Void
      */
-    fun deleteHatRecord(userDomain: String, userToken: String, recordIds: Array<String>, success:  (String) -> Unit, failed:  (HATError) -> Unit) {
+    fun deleteHatRecord(userDomain: String, userToken: String, recordIds: Array<String>, success: (String) -> Unit, failed: (HATError) -> Unit) {
         val url: String = "https://$userDomain/api/v2.6/data"
         val headers = mapOf("x-auth-token" to userToken)
         val params = mutableListOf<Pair<String, Any?>>()
-        for(i in recordIds.indices){
+        for (i in recordIds.indices) {
             params.add("records" to recordIds[i])
         }
-        HATNetworkManager().deleteRequest(url,params,headers) { r ->
-            when(r){
+        HATNetworkManager().deleteRequest(url, params, headers) { r ->
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401 && r.statusCode != 403) {
-                        triggerHatUpdate(userDomain){}
+                        triggerHatUpdate(userDomain) {}
                         success(userToken)
-                    } else{
+                    } else {
                         val error = HATError()
                         error.errorCode = r.statusCode
                         error.errorMessage = r.resultString
@@ -127,12 +120,13 @@ class HATAccountService{
                     error.errorMessage = r.resultString
                     failed(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
 
-        // MARK: - Trigger an update
+    // MARK: - Trigger an update
 
     /**
     Triggers an update to hat servers
@@ -147,14 +141,15 @@ class HATAccountService{
                 url,
                 listOf("phata" to userDomain),
                 null) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     completion()
                 }
                 ResultType.HasFailed -> {
                     completion()
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
@@ -164,8 +159,8 @@ class HATAccountService{
         return mapper.writeValueAsString(body)
     }
 
-    fun getCombinator(userDomain: String, userToken: String, combinatorName: String ,  completion: (result : ResultType?) -> Unit) {
+    fun getCombinator(userDomain: String, userToken: String, combinatorName: String, completion: (result: ResultType?) -> Unit) {
         val url = "https://$userDomain/api/v2.6/combinator/$combinatorName"
-        HATNetworkManager().getRequest(url,null,mapOf("x-auth-token" to userToken)) { r-> completion(r)}
+        HATNetworkManager().getRequest(url, null, mapOf("x-auth-token" to userToken)) { r -> completion(r) }
     }
 }

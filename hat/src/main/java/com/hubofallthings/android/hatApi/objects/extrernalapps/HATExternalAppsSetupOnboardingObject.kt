@@ -6,4 +6,4 @@ data class HATExternalAppsSetupOnboardingObject(
         val illustration: HATExternalAppsIllustrationObject? = null,
         val title: String = "",
         val description: String = ""
-): Serializable
+) : Serializable

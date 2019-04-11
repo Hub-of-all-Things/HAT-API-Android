@@ -4,12 +4,12 @@ import java.io.Serializable
 data class HATProfileDataProfileContactObject(
 
         // MARK: - Variables
-        /// The user's mobile number
+        // The user's mobile number
         var mobile: String = "",
-                /// The user's landline
+        // The user's landline
         var landline: String = "",
-                /// The user's primary email
+        // The user's primary email
         var primaryEmail: String = "",
-                /// The user's alternative email
+        // The user's alternative email
         var alternativeEmail: String = ""
-): Serializable
+) : Serializable

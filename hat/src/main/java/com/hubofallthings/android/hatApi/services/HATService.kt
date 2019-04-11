@@ -1,11 +1,6 @@
 package com.hubofallthings.android.hatApi.services
 
-import android.util.Log
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.github.kittinunf.fuel.Fuel
-import com.github.kittinunf.fuel.android.extension.responseJson
-import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.result.Result
 import com.hubofallthings.android.hatApi.configuration.ContentType
 import com.hubofallthings.android.hatApi.configuration.TokenParameters
 import com.hubofallthings.android.hatApi.configuration.VerifiedDomains
@@ -13,7 +8,6 @@ import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
-import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
 import com.hubofallthings.android.hatApi.objects.purchase.PurchaseObject
 import com.hubofallthings.android.hatApi.objects.systemStatus.HATSystemStatusObject
 import com.nimbusds.jose.JOSEException
@@ -35,10 +29,12 @@ import java.security.spec.X509EncodedKeySpec
  */
 open class HATService {
 
-    fun formatAndVerifyDomain(userHATDomain: String,
-                              verifiedDomains: Array<String> = VerifiedDomains().verifiedHATDomains(),
-                              successfulVerification: (String) -> Void,
-                              failedVerification: (String) -> Void) {
+    fun formatAndVerifyDomain(
+            userHATDomain: String,
+            verifiedDomains: Array<String> = VerifiedDomains().verifiedHATDomains(),
+            successfulVerification: (String) -> Void,
+            failedVerification: (String) -> Void
+    ) {
 
         val trimmedString: String = userHATDomain.trim()
         val isAllowedDomain: Boolean = verifiedDomains.contains(trimmedString)
@@ -54,10 +50,12 @@ open class HATService {
     }
 
 
-    fun loginToHATAuthorization(applicationName: String,
-                                url: String,
-                                success: ((String?, String?) -> Unit)?,
-                                failed: ((HATError) -> Unit)?) {
+    fun loginToHATAuthorization(
+            applicationName: String,
+            url: String,
+            success: ((String?, String?) -> Unit)?,
+            failed: ((HATError) -> Unit)?
+    ) {
 
         val token = HATNetworkManager().getQueryStringParameter(url, "token")
         if (!token.isNullOrEmpty()) {
@@ -74,14 +72,15 @@ open class HATService {
 
     }
 
-    fun verifyToken(r: ResultType?,
-                    token: String,
-                    applicationName: String,
-                    decodedToken: JWT,
-                    userDomain: String,
-                    success: ((String?, String?) -> Unit)?,
-                    failed: ((HATError) -> Unit)?) {
-
+    fun verifyToken(
+            r: ResultType?,
+            token: String,
+            applicationName: String,
+            decodedToken: JWT,
+            userDomain: String,
+            success: ((String?, String?) -> Unit)?,
+            failed: ((HATError) -> Unit)?
+    ) {
         when (r) {
 
             ResultType.IsSuccess -> {
@@ -118,9 +117,7 @@ open class HATService {
                             val verifier = RSASSAVerifier(key)
                             cSignedJWT.verify(verifier)
                             success?.invoke(userDomain, token)
-                        } catch (error: JOSEException) {
-
-                        }
+                        } catch (error: JOSEException) { }
                     } else {
 
                         val error = HATError()
@@ -165,15 +162,15 @@ open class HATService {
     - parameter succesfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun confirmHATPurchase(purchaseModel: PurchaseObject, succesfulCallBack: (String, String?) -> Unit, failCallBack:  (HATError) -> Unit){
-        val url =  "https://hatters.hubofallthings.com/api/products/hat/purchase"
+    fun confirmHATPurchase(purchaseModel: PurchaseObject, successfulCallBack: (String, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        val url = "https://hatters.hubofallthings.com/api/products/hat/purchase"
         val mapper = jacksonObjectMapper()
         val purchaseJson = mapper.writeValueAsString(purchaseModel)
-        HATNetworkManager().postRequest(url,purchaseJson,mapOf("Content-Type" to "application/json")){
-            if(it?.statusCode == 200){
-                succesfulCallBack("result ok" , "")
+        HATNetworkManager().postRequest(url, purchaseJson, mapOf("Content-Type" to "application/json")) {
+            if (it?.statusCode == 200) {
+                successfulCallBack("result ok", "")
             } else {
-                val e =HATError()
+                val e = HATError()
                 e.errorMessage = it?.resultString
                 e.errorCode = it?.statusCode
                 failCallBack(e)
@@ -191,12 +188,12 @@ open class HATService {
     - parameter succesfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun validateEmailAddress(email: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
+    fun validateEmailAddress(email: String, cluster: String, successfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
         val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-email"
         val parameters = listOf("email" to email, "cluster" to cluster)
-        HATNetworkManager().getRequest(url,parameters,null){
-            if(it?.statusCode == 200){
-                succesfulCallBack("valid address", "")
+        HATNetworkManager().getRequest(url, parameters, null) {
+            if (it?.statusCode == 200) {
+                successfulCallBack("valid address", "")
             } else {
                 failCallBack("HAT with such username already exists")
             }
@@ -211,12 +208,12 @@ open class HATService {
     - parameter succesfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun validateHATAddress(address: String, cluster: String, succesfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
+    fun validateHATAddress(address: String, cluster: String, successfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
         val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-hat"
         val parameters = listOf("address" to address, "cluster" to cluster)
-        HATNetworkManager().getRequest(url,parameters,null){
-            if(it?.statusCode == 200){
-                succesfulCallBack("valid address", "")
+        HATNetworkManager().getRequest(url, parameters, null) {
+            if (it?.statusCode == 200) {
+                successfulCallBack("valid address", "")
             } else {
                 failCallBack("HAT with such username already exists")
             }
@@ -266,4 +263,3 @@ open class HATService {
         }
     }
 }
-

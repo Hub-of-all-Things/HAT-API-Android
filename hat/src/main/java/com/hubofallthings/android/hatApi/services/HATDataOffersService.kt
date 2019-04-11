@@ -21,7 +21,7 @@ class HATDataOffersService {
     - parameter succesfulCallBack: A function of type ([DataOfferObject], String?) -> Void, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
      */
-    fun getAvailableDataOffers(userDomain: String, userToken: String,application : String,merchants: List<Pair<String,Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+    fun getAvailableDataOffers(userDomain: String, userToken: String, application: String, merchants: List<Pair<String, Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url = "https://$userDomain/api/v2.6/applications/$application/proxy/api/v2/offers"
         val headers = mapOf("x-auth-token" to userToken)
         HATNetworkManager().getRequest(
@@ -62,7 +62,7 @@ class HATDataOffersService {
     - parameter succesfulCallBack: A function of type ([DataOfferObject], String?) -> Void, executed on a successful result
     - parameter failCallBack: A function of type (DataPlugError) -> Void, executed on an unsuccessful result
      */
-    fun getAvailableDataOffersWithClaims(userDomain: String, userToken: String,application : String, merchants: List<Pair<String,Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+    fun getAvailableDataOffersWithClaims(userDomain: String, userToken: String, application: String, merchants: List<Pair<String, Any>>?, successfulCallBack: (List<DataOfferObject>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url = "https://$userDomain/api/v2.6/applications/$application/proxy/api/v2/offersWithClaims"
         val headers = mapOf("x-auth-token" to userToken)
         HATNetworkManager().getRequest(
@@ -184,7 +184,7 @@ class HATDataOffersService {
     - parameter succesfulCallBack: A function to execute on successful response returning the merchants array and the renewed user's token
     - parameter failCallBack: A function to execute on failed response returning the error
      */
-    fun getMerchants(userToken: String, userDomain: String, successfulCallBack:  (List<String>, String?) -> Unit, failCallBack:  (HATError) -> Unit) {
+    fun getMerchants(userToken: String, userDomain: String, successfulCallBack: (List<String>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url: String = "https://$userDomain/api/v2/data/dex/databuyer"
 
     }

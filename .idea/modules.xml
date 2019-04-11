@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/HAT-API-Android.iml" filepath="$PROJECT_DIR$/.idea/HAT-API-Android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HAT-API-Android.iml" filepath="$PROJECT_DIR$/HAT-API-Android.iml" />
       <module fileurl="file://$PROJECT_DIR$/hat/hat.iml" filepath="$PROJECT_DIR$/hat/hat.iml" />
     </modules>
   </component>

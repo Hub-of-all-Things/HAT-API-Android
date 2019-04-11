@@ -10,14 +10,14 @@ import com.hubofallthings.android.hatApi.objects.tools.HATToolsObject
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-interface ToolsService{
-    fun getAvailableTools(userToken : String, userDomain : String, completion: ((List<HATToolsObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun getTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun enableTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun disableTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun triggerToolUpdate(toolName: String , userToken : String, userDomain : String, completion: ((String?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+interface ToolsService {
+    fun getAvailableTools(userToken: String, userDomain: String, completion: ((List<HATToolsObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun enableTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun disableTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun triggerToolUpdate(toolName: String, userToken: String, userDomain: String, completion: ((String?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
 }
-class HATToolsService : ToolsService{
+class HATToolsService : ToolsService {
     // MARK: - Get tools
 
     /**
@@ -28,7 +28,7 @@ class HATToolsService : ToolsService{
     - parameter completion: A function to execute on success with the tools and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun getAvailableTools(userToken : String, userDomain : String, completion: ((List<HATToolsObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun getAvailableTools(userToken: String, userDomain: String, completion: ((List<HATToolsObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/function"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -36,16 +36,16 @@ class HATToolsService : ToolsService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        Log.i("HATTools","success")
+                        Log.i("HATTools", "success")
                         val json = r.json?.content
                         doAsync {
                             val toolObj = HATParserManager().jsonToObjectList(json, HATToolsObject::class.java)
-                            uiThread{
-                                Log.i("HATTools","completion")
-                                completion(toolObj,r.token)
+                            uiThread {
+                                Log.i("HATTools", "completion")
+                                completion(toolObj, r.token)
                             }
                         }
                     }
@@ -56,10 +56,12 @@ class HATToolsService : ToolsService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Gets the tool from HAT
 
@@ -69,7 +71,7 @@ class HATToolsService : ToolsService{
     - parameter completion: A function to execute on success with the tool and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun getTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun getTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/function/$toolName"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -77,16 +79,16 @@ class HATToolsService : ToolsService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        Log.i("HATTools","success")
+                        Log.i("HATTools", "success")
                         val json = r.json?.content
                         doAsync {
                             val toolObj = json?.toKotlinObject<HATToolsObject?>()
-                            uiThread{
-                                Log.i("HATTools","completion")
-                                completion(toolObj,r.token)
+                            uiThread {
+                                Log.i("HATTools", "completion")
+                                completion(toolObj, r.token)
                             }
                         }
                     }
@@ -97,10 +99,12 @@ class HATToolsService : ToolsService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Enable tool from HAT
 
@@ -110,7 +114,7 @@ class HATToolsService : ToolsService{
     - parameter completion: A function to execute on success with the tool and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun enableTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun enableTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/function/$toolName/enable"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -118,16 +122,16 @@ class HATToolsService : ToolsService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        Log.i("HATTools","success")
+                        Log.i("HATTools", "success")
                         val json = r.json?.content
                         doAsync {
                             val externalAppsObject = json?.toKotlinObject<HATToolsObject?>()
-                            uiThread{
-                                Log.i("HATTools","completion")
-                                completion(externalAppsObject,r.token)
+                            uiThread {
+                                Log.i("HATTools", "completion")
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
@@ -138,10 +142,12 @@ class HATToolsService : ToolsService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Disable tool from HAT
 
@@ -151,7 +157,7 @@ class HATToolsService : ToolsService{
     - parameter completion: A function to execute on success with the tool and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun disableTool(toolName: String , userToken : String, userDomain : String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun disableTool(toolName: String, userToken: String, userDomain: String, completion: ((HATToolsObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/function/$toolName/disable"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -159,16 +165,16 @@ class HATToolsService : ToolsService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        Log.i("HATTools","success")
+                        Log.i("HATTools", "success")
                         val json = r.json?.content
                         doAsync {
                             val externalAppsObject = json?.toKotlinObject<HATToolsObject?>()
-                            uiThread{
-                                Log.i("HATTools","completion")
-                                completion(externalAppsObject,r.token)
+                            uiThread {
+                                Log.i("HATTools", "completion")
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
@@ -179,10 +185,12 @@ class HATToolsService : ToolsService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
+
     /**
     Trigger tool update from HAT
 
@@ -192,7 +200,7 @@ class HATToolsService : ToolsService{
     - parameter completion: A function to execute on success with the result message and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun triggerToolUpdate(toolName: String , userToken : String, userDomain : String, completion: ((String?, String?) -> Unit), failCallBack: ((HATError) -> Unit)){
+    override fun triggerToolUpdate(toolName: String, userToken: String, userDomain: String, completion: ((String?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/she/function/$toolName/trigger"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -200,11 +208,11 @@ class HATToolsService : ToolsService{
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        Log.i("HATTools","success")
-                        completion(r.resultString,r.token)
+                        Log.i("HATTools", "success")
+                        completion(r.resultString, r.token)
                     }
                 }
                 ResultType.HasFailed -> {
@@ -213,10 +221,9 @@ class HATToolsService : ToolsService{
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
-
-
 }

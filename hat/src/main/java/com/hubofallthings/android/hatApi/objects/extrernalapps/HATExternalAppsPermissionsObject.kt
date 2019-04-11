@@ -15,4 +15,4 @@ data class HATExternalAppsPermissionsObject(
         // The bundle info required for this app
         @JsonSetter(nulls = Nulls.AS_EMPTY)
         val dataRetrieved: DataOfferRequiredDataDefinitionObjectV2? = null
-): Serializable
+) : Serializable

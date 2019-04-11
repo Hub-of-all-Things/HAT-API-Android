@@ -3,32 +3,32 @@ package com.hubofallthings.android.hatApi.objects.fileUploadObject
 data class FileUploadObject(
     // MARK: - Variables
 
-    /// The file ID of the uploaded file
+    // The file ID of the uploaded file
     var fileId: String = "",
-        /// The name of the uploaded file
+    // The name of the uploaded file
     var name: String = "",
-        /// The source of the uploaded file
+    // The source of the uploaded file
     var source: String = "",
-        /// The tags of the uploaded file
+    // The tags of the uploaded file
     var tags: Array<String>,
-    /// The image of the uploaded file
+    // The image of the uploaded file
     var image: String?,
-    /// The title of the uploaded file
+    // The title of the uploaded file
     var title: String = "",
-    /// The description of the uploaded file
+    // The description of the uploaded file
     var fileDescription: String = "",
-    /// The created date of the uploaded file
+    // The created date of the uploaded file
     var dateCreated: String?,
-    /// The last updated date of the uploaded file
+    // The last updated date of the uploaded file
     var lastUpdated: String?,
-    /// The current status of the uploaded file
+    // The current status of the uploaded file
     var status: FileUploadObjectStatus,
-    /// The image url of the uploaded file
+    // The image url of the uploaded file
     var contentUrl: String = "",
-    /// Is the uploaded file public
+    // Is the uploaded file public
     var contentPublic : Boolean= false,
-    /// The permissions of the uploaded file
-     var permissions: Array<FileUploadObjectPermissions>
+    // The permissions of the uploaded file
+    var permissions: Array<FileUploadObjectPermissions>
 )
 data class Fields(
     val fileId: String = "fileId",

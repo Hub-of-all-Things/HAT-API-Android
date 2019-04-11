@@ -4,18 +4,18 @@ import java.io.Serializable
 data class HATProfileDataProfileOnlineObject(
         // MARK: - Variables
 
-        /// The user's blog address
+        // The user's blog address
         var blog: String = "",
-                /// The user's google address
+        // The user's google address
         var google: String = "",
-                /// The user's twitter address
+        // The user's twitter address
         var twitter: String = "",
-                /// The user's website address
+        // The user's website address
         var website: String = "",
-                /// The user's youtube address
+        // The user's youtube address
         var youtube: String = "",
-                /// The user's facebook address
+        // The user's facebook address
         var facebook: String = "",
-                /// The user's linkedin address
+        // The user's linkedin address
         var linkedin: String = ""
-): Serializable
+) : Serializable

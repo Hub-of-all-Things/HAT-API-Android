@@ -4,6 +4,6 @@ import java.io.Serializable
 data class HATProfileDataProfilePhotoObject(
         // MARK: - Variables
 
-        /// The user's avatar URL
+        // The user's avatar URL
         var avatar: String = ""
-): Serializable
+) : Serializable

@@ -15,4 +15,4 @@ data class HATToolsInfoObject(
         var dataPreview: Array<HATFeedObject>?,
         var graphics: HATToolsGraphicsObject,
         var dataPreviewEndpoint: String = ""
-): Serializable
+) : Serializable

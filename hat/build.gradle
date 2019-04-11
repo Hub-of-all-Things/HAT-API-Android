@@ -22,7 +22,7 @@ ext {
     siteUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android'
     gitUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android.git'
 
-    libraryVersion = '0.0.31.8'
+    libraryVersion = '0.0.31.9'
 
     developerId = 'lizchandler'
     developerName = 'Myteletsis Eleftherios'
@@ -43,7 +43,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName  '0.0.31.8'
+        versionName  '0.0.31.9'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -82,6 +82,7 @@ dependencies {
     implementation 'com.nimbusds:nimbus-jose-jwt:5.8'
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
     implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
+    androidTestImplementation 'junit:junit:4.12'
     androidTestImplementation 'junit:junit:4.12'
 }
 repositories{

@@ -7,7 +7,7 @@ import com.hubofallthings.android.hatApi.services.ToolsService
 import org.junit.Assert
 import org.junit.Test
 
-class HATTestToolsParser{
+class HATTestToolsParser {
     private val toolsJson = """{
         "id": "test-tool",
         "info": {
@@ -159,7 +159,7 @@ class HATTestToolsParser{
 """
 
     @Test
-    fun testParseTool(){
+    fun testParseTool() {
         val toolObj = toolsJson.toKotlinObject<HATToolsObject?>()
         val expectedAppID = "test-tool"
         Assert.assertEquals(expectedAppID, toolObj?.id)
@@ -168,10 +168,11 @@ class HATTestToolsParser{
         val expectedExecution = "2018-10-18T08:57:52.914Z"
         Assert.assertEquals(expectedExecution, toolObj?.status?.lastExecution)
         val expectedEnabled = true
-        Assert.assertEquals(expectedEnabled,  toolObj?.status?.enabled)
+        Assert.assertEquals(expectedEnabled, toolObj?.status?.enabled)
     }
+
     @Test
-    fun testParseToolList(){
+    fun testParseToolList() {
         val toolObj = HATParserManager().jsonToObjectList(toolsJson, HATToolsObject::class.java)
         val expectedAppID = "test-tool"
         Assert.assertEquals(expectedAppID, toolObj[0].id)
@@ -180,8 +181,6 @@ class HATTestToolsParser{
         val expectedExecution = "2018-10-18T08:57:52.914Z"
         Assert.assertEquals(expectedExecution, toolObj[0].status.lastExecution)
         val expectedEnabled = true
-        Assert.assertEquals(expectedEnabled,  toolObj[0].status.enabled)
+        Assert.assertEquals(expectedEnabled, toolObj[0].status.enabled)
     }
-
-
 }

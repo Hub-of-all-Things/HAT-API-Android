@@ -1,7 +1,5 @@
 package com.hubofallthings.android.hatApi.services
 
-import android.support.annotation.UiThread
-import android.util.Log
 import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
@@ -11,15 +9,15 @@ import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObj
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-interface ExternalAppsService{
-    fun getExternalApps(userToken : String, userDomain : String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun getAppInfo(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit))
-    fun setUpApp(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit))
-    fun disableApplication(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit))
-    fun getExternalByKind(kind : String ,userToken : String, userDomain : String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun getDataPlugs(userToken : String, userDomain : String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun getApps(userToken : String, userDomain : String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
-    fun getAppWithAppId(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit))
+interface ExternalAppsService {
+    fun getExternalApps(userToken: String, userDomain: String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getAppInfo(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun setUpApp(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun disableApplication(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getExternalByKind(kind: String, userToken: String, userDomain: String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getDataPlugs(userToken: String, userDomain: String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getApps(userToken: String, userDomain: String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
+    fun getAppWithAppId(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
 }
 class HATExternalAppsService : ExternalAppsService {
     // MARK: - Get external apps
@@ -32,7 +30,7 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter completion: A function to execute on success with the apps and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun getExternalApps(userToken : String, userDomain : String , completion: ((List<HATApplicationObject>?, String?) -> Unit),failCallBack: ((HATError) -> Unit)){
+    override fun getExternalApps(userToken: String, userDomain: String, completion: ((List<HATApplicationObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/applications"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -40,26 +38,27 @@ class HATExternalAppsService : ExternalAppsService {
                 url,
                 null,
                 headers) { r ->
-                when(r){
-                    IsSuccess -> {
-                        if (r.statusCode != 401) {
-                            val json = r.json!!.content
-                            doAsync {
-                                val externalAppsObject = HATParserManager().jsonToObjectList(json, HATApplicationObject::class.java)
-                                uiThread{
-                                    completion(externalAppsObject,r.token)
-                                }
+            when (r) {
+                IsSuccess -> {
+                    if (r.statusCode != 401) {
+                        val json = r.json!!.content
+                        doAsync {
+                            val externalAppsObject = HATParserManager().jsonToObjectList(json, HATApplicationObject::class.java)
+                            uiThread {
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
-                    HasFailed -> {
-                        val error = HATError()
-                        error.errorCode = r.statusCode
-                        error.errorMessage = r.resultString
-                        failCallBack(error)
-                    }
-                    null -> {}
                 }
+                HasFailed -> {
+                    val error = HATError()
+                    error.errorCode = r.statusCode
+                    error.errorMessage = r.resultString
+                    failCallBack(error)
+                }
+                null -> {
+                }
+            }
         }
     }
 
@@ -73,7 +72,7 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter completion: A function to execute on success with the apps and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun getAppInfo(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit)){
+    override fun getAppInfo(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/applications/$applicationId"
         val headers = mapOf("x-auth-token" to userToken, "Cache-Control" to "no-cache")
 
@@ -81,14 +80,14 @@ class HATExternalAppsService : ExternalAppsService {
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val externalAppsObject = json.toKotlinObject<HATApplicationObject?>()
-                            uiThread{
-                                completion(externalAppsObject,r.token)
+                            uiThread {
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
@@ -99,7 +98,8 @@ class HATExternalAppsService : ExternalAppsService {
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
@@ -114,7 +114,7 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter completion: A function to execute on success with the apps and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun setUpApp(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit)){
+    override fun setUpApp(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/applications/$applicationId/setup"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -122,14 +122,14 @@ class HATExternalAppsService : ExternalAppsService {
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val externalAppsObject = json.toKotlinObject<HATApplicationObject?>()
-                            uiThread{
-                                completion(externalAppsObject,r.token)
+                            uiThread {
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
@@ -140,7 +140,8 @@ class HATExternalAppsService : ExternalAppsService {
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
@@ -155,7 +156,7 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter completion: A function to execute on success with the apps and the new token
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
-    override fun disableApplication(userToken : String, userDomain : String ,applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit),failCallBack: ((HATError) -> Unit)){
+    override fun disableApplication(userToken: String, userDomain: String, applicationId: String, completion: ((HATApplicationObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit)) {
         val url = "https://$userDomain/api/v2.6/applications/$applicationId/disable"
         val headers = mapOf("x-auth-token" to userToken)
 
@@ -163,14 +164,14 @@ class HATExternalAppsService : ExternalAppsService {
                 url,
                 null,
                 headers) { r ->
-            when(r){
+            when (r) {
                 IsSuccess -> {
                     if (r.statusCode != 401) {
                         val json = r.json!!.content
                         doAsync {
                             val externalAppsObject = json.toKotlinObject<HATApplicationObject?>()
-                            uiThread{
-                                completion(externalAppsObject,r.token)
+                            uiThread {
+                                completion(externalAppsObject, r.token)
                             }
                         }
                     }
@@ -181,7 +182,8 @@ class HATExternalAppsService : ExternalAppsService {
                     error.errorMessage = r.resultString
                     failCallBack(error)
                 }
-                null -> {}
+                null -> {
+                }
             }
         }
     }
@@ -197,17 +199,17 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
     override fun getExternalByKind(kind: String, userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        fun completionApps(appsList: List<HATApplicationObject>?, newToken: String?){
+        fun completionApps(appsList: List<HATApplicationObject>?, newToken: String?) {
             val result = ArrayList<HATApplicationObject>()
-            if(appsList!=null){
+            if (appsList != null) {
                 doAsync {
-                    for(i in appsList.indices) {
-                        if (appsList[i].application?.kind?.kind == kind){
+                    for (i in appsList.indices) {
+                        if (appsList[i].application?.kind?.kind == kind) {
                             result.add(appsList[i])
                         }
                     }
-                    uiThread{
-                        completion(result,newToken)
+                    uiThread {
+                        completion(result, newToken)
                     }
                 }
             } else {
@@ -217,10 +219,11 @@ class HATExternalAppsService : ExternalAppsService {
                 failCallBack(e)
             }
         }
+
         fun failcallback(error: HATError) {
             failCallBack(error)
         }
-        HATExternalAppsService().getExternalApps(userToken,userDomain,{ list: List<HATApplicationObject>?, s: String? -> completionApps(list,s)},{ error -> failcallback(error) })
+        HATExternalAppsService().getExternalApps(userToken, userDomain, { list: List<HATApplicationObject>?, s: String? -> completionApps(list, s) }, { error -> failcallback(error) })
     }
     // MARK: - Get Data plugs
 
@@ -233,7 +236,7 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
     override fun getDataPlugs(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        getExternalByKind("DataPlug", userToken, userDomain,{ list: List<HATApplicationObject>?, s: String? -> completion(list,s)},{ error -> failCallBack(error) })
+        getExternalByKind("DataPlug", userToken, userDomain, { list: List<HATApplicationObject>?, s: String? -> completion(list, s) }, { error -> failCallBack(error) })
     }
     // MARK: - Get Apps
 
@@ -246,26 +249,26 @@ class HATExternalAppsService : ExternalAppsService {
     - parameter failCallBack: A function to execute on fail that takes the error produced
      */
     override fun getApps(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        getExternalByKind("App", userToken, userDomain,{ list: List<HATApplicationObject>?, s: String? -> completion(list,s)},{ error -> failCallBack(error) })
+        getExternalByKind("App", userToken, userDomain, { list: List<HATApplicationObject>?, s: String? -> completion(list, s) }, { error -> failCallBack(error) })
     }
 
     override fun getAppWithAppId(userToken: String, userDomain: String, applicationId: String, completion: (HATApplicationObject?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        if (applicationId == "hatapp" || applicationId == "hatappstaging" ||applicationId == "notables" || applicationId == "datatraderstaging"  || applicationId == "shapestaging" ||applicationId == "datatrader"  || applicationId == "shape"){
-            getAppInfo(userToken,userDomain,applicationId,{app,newToken -> completion(app,newToken)},{error -> failCallBack(error)})
+        if (applicationId == "hatapp" || applicationId == "hatappstaging" || applicationId == "notables" || applicationId == "datatraderstaging" || applicationId == "shapestaging" || applicationId == "datatrader" || applicationId == "shape") {
+            getAppInfo(userToken, userDomain, applicationId, { app, newToken -> completion(app, newToken) }, { error -> failCallBack(error) })
         } else {
-            fun completionApp(list : List<HATApplicationObject>?,newToken  : String?){
+            fun completionApp(list: List<HATApplicationObject>?, newToken: String?) {
                 doAsync {
-                    if (applicationId.isNotEmpty() && list!=null){
-                        var appObj : HATApplicationObject? = null
-                        for (i in list.indices){
-                            if(list[i].application?.id == applicationId){
+                    if (applicationId.isNotEmpty() && list != null) {
+                        var appObj: HATApplicationObject? = null
+                        for (i in list.indices) {
+                            if (list[i].application?.id == applicationId) {
                                 appObj = list[i]
                                 break
                             }
                         }
                         uiThread {
-                            if(appObj != null){
-                                completion(appObj,newToken)
+                            if (appObj != null) {
+                                completion(appObj, newToken)
                             } else {
                                 val e = HATError()
                                 e.errorMessage = "application is null"
@@ -273,7 +276,7 @@ class HATExternalAppsService : ExternalAppsService {
                                 failCallBack(e)
                             }
                         }
-                    } else{
+                    } else {
                         val e = HATError()
                         e.errorMessage = "app id or list is empty"
                         e.errorCode = 400
@@ -281,7 +284,7 @@ class HATExternalAppsService : ExternalAppsService {
                     }
                 }
             }
-            getExternalApps(userToken,userDomain,{list ,newToken -> completionApp(list,newToken)}, {error -> failCallBack(error)})
+            getExternalApps(userToken, userDomain, { list, newToken -> completionApp(list, newToken) }, { error -> failCallBack(error) })
         }
     }
 }
