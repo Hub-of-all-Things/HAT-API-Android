@@ -183,17 +183,25 @@ open class HATService {
     /**
     Validates email address with the HAT
 
+    - parameter baseUrl: The base url to validate with the HAT f.e hatters.hubat.net
     - parameter email: The email to validate with the HAT
-    - parameter cluster: The cluster to validate the email with
-    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter successfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun validateEmailAddress(email: String, cluster: String, successfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
-        val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-email"
-        val parameters = listOf("email" to email, "cluster" to cluster)
+    fun validateEmailAddress(baseUrl: String, email: String, successfulCallBack: (String?, String?) -> Unit, failCallBack: (String) -> Unit) {
+        val url = "https://$baseUrl/api/validate-email"
+        val parameters = listOf("email" to email)
+
         HATNetworkManager().getRequest(url, parameters, null) {
             if (it?.statusCode == 200) {
-                successfulCallBack("valid address", "")
+                if (it.json == null) {
+                    failCallBack("HAT with such username already exists")
+                }
+                it.json?.let { json ->
+                    val hatCluster: String? = json.obj()["hatCluster"].toString()
+                    val hatName: String = json.obj()["hatName"].toString()
+                    successfulCallBack(hatName, hatCluster)
+                }
             } else {
                 failCallBack("HAT with such username already exists")
             }
@@ -203,17 +211,27 @@ open class HATService {
     /**
     Validates HAT address with HAT
 
+
+    - parameter baseUrl: The base url to validate with the HAT f.e hatters.hubat.net
     - parameter address: The address to validate with the HAT
     - parameter cluster: The cluster to validate the email with
-    - parameter succesfulCallBack: A function to call if everything is ok
+    - parameter successfulCallBack: A function to call if everything is ok
     - parameter failCallBack: A function to call if fail
      */
-    fun validateHATAddress(address: String, cluster: String, successfulCallBack: (String, String?) -> Unit, failCallBack: (String) -> Unit) {
-        val url: String = "https://hatters.hubofallthings.com/api/products/hat/validate-hat"
-        val parameters = listOf("address" to address, "cluster" to cluster)
+    fun validateHATAddress(baseUrl: String, username: String, successfulCallBack: (String?, String?) -> Unit, failCallBack: (String) -> Unit) {
+        val url: String = "https://$baseUrl/api/validate-hat-domain"
+        val parameters = listOf("username" to username)
+
         HATNetworkManager().getRequest(url, parameters, null) {
             if (it?.statusCode == 200) {
-                successfulCallBack("valid address", "")
+                if (it.json == null) {
+                    failCallBack("HAT with such username already exists")
+                }
+                it.json?.let { json ->
+                    val hatCluster: String? = json.obj()["hatCluster"].toString()
+                    val hatName: String = json.obj()["hatName"].toString()
+                    successfulCallBack(hatName, hatCluster)
+                }
             } else {
                 failCallBack("HAT with such username already exists")
             }
