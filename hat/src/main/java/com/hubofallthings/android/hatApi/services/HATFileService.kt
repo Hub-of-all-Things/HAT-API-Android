@@ -19,6 +19,9 @@ import org.jetbrains.anko.uiThread
 import java.io.File
 import java.io.FileInputStream
 import java.io.IOException
+import android.content.ContentResolver
+import android.net.Uri
+
 
 class HATFileService {
     private val TAG = HATFileService::class.java.simpleName
@@ -118,11 +121,13 @@ class HATFileService {
 
     private fun uploadFile(
             image: File,
+            type: String = "image/png",
             contentUrl: String,
             completion: (String) -> Unit,
             errorCallback: (FuelError) -> Unit) {
 
-        FuelManager.instance.baseHeaders = mapOf("x-amz-server-side-encryption" to "AES256")
+        Log.i("mime-type", type)
+        FuelManager.instance.baseHeaders = mapOf("x-amz-server-side-encryption" to "AES256", "Content-Type" to type)
         Fuel.put(contentUrl).body(image.readBytes()).responseString { _, response, result ->
             when (result) {
                 is Result.Failure -> {
@@ -304,12 +309,13 @@ class HATFileService {
             userDomain: String,
             fileToUpload: File,
             name: String,
+            type: String,
             completion: ((FileUploadObject, String) -> Unit)?,
             errorCallBack: ((FuelError) -> Unit)?
     ) {
 
         uploadFileToHAT(name, token, userDomain, { fileUploadObject, _ ->
-            uploadFile(fileToUpload, fileUploadObject.contentUrl, { _ ->
+            uploadFile(fileToUpload, type, fileUploadObject.contentUrl, { _ ->
                 completeUploadFileToHAT(
                         fileUploadObject.fileId,
                         token,
