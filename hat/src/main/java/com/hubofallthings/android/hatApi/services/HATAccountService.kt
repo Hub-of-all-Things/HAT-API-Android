@@ -74,8 +74,8 @@ class HATAccountService {
                 }
                 ResultType.HasFailed -> {
                     val e = HATError()
-                    e.errorCode = it?.statusCode
-                    e.errorMessage = it?.error?.localizedMessage
+                    e.errorCode = it.statusCode
+                    e.errorMessage = it.error?.localizedMessage
                     failCallback(e)
                 }
             }
