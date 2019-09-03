@@ -26,12 +26,12 @@ before_install:
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license" // Accepting license
 
 script:
-  - ./gradlew build connectedCheck
+  - ./gradlew build
   - ./gradlew clean build
 
 deploy:
   provider: script
-  script: ./gradlew :clean :hat:assembleRelease :hat:bintrayUpload
+  script: ./gradlew :clean :hat:bintrayUpload
   skip_cleanup: true # to upload artifacts created during the build
   dry-run: false
   on:
