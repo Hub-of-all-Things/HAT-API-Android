@@ -1,5 +1,7 @@
 # HAT For Android
-[ ![Download](https://api.bintray.com/packages/lizchandler/HAT-API-Android/com.hubofallthings.android.hatApi/images/download.svg) ](https://bintray.com/lizchandler/HAT-API-Android/com.hubofallthings.android.hatApi/_latestVersion) | [View HAT Android's documentation][1] | [Open a new issue on Github][2]
+[ ![Download](https://api.bintray.com/packages/lizchandler/HAT-API-Android/com.hubofallthings.android.hatApi/images/download.svg) ](https://bintray.com/lizchandler/HAT-API-Android/com.hubofallthings.android.hatApi/_latestVersion) 
+[![Build Status](https://travis-ci.org/Hub-of-all-Things/HAT-API-Android.svg?branch=master)](https://travis-ci.org/Hub-of-all-Things/HAT-API-Android)
+ | [View HAT Android's documentation][1] | [Open a new issue on Github][2]
 
 ## Overview
 This libary contains all the API calls needed to communicate with the HAT
