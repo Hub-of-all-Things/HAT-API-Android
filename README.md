@@ -4,7 +4,7 @@
  | [View HAT Android's documentation][1] | [Open a new issue on Github][2]
 
 ## Overview
-This libary contains all the API calls needed to communicate with the HAT
+This library contains all the API calls needed to communicate with the HAT
 
 - Handle user Login
 - Request tokens for the user or services like Facebook, Twitter, Fitbit etc

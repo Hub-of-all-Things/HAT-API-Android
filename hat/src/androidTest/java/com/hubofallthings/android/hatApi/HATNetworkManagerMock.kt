@@ -4,8 +4,25 @@ import com.github.kittinunf.fuel.android.core.Json
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.NetworkLayer
 import com.hubofallthings.android.hatApi.managers.ResultType
+import org.junit.Test
+import kotlin.test.assertTrue
 
 class HATNetworkManagerTest: NetworkLayer {
+    override fun postRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun putRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun uploadRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun deleteRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     val body: Json = Json("[{\"endpoint\" : \"spotify/profile\",\n" +
             "        \"recordId\" : \"f277374c-df57-410c-aa07-d448eb9354da\",\n" +
@@ -23,7 +40,7 @@ class HATNetworkManagerTest: NetworkLayer {
             "        }]")
 
 
-    override fun getRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
 
         val type = ResultType.IsSuccess
         type.statusCode = 200
