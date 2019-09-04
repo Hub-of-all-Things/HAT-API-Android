@@ -15,6 +15,9 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
+branches:
+  only:
+    - travis
 
 android:
   components:
@@ -32,10 +35,13 @@ before_install:
 script:
   - ./gradlew build
 
-deploy:
-  provider: bintray
-  script: ./gradlew bintrayUpload
-  skip_cleanup: true # to upload artifacts created during the build
-  dry-run: false
-  on:
-    branch: master
+after_success:
+  - ./gradlew bintrayUpload
+
+#deploy:
+#  provider: bintray
+#  script: ./gradlew bintrayUpload
+#  skip_cleanup: true # to upload artifacts created during the build
+#  dry-run: false
+#  on:
+#    branch: master
