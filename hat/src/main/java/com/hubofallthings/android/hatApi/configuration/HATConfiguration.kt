@@ -18,7 +18,7 @@ class VerifiedDomains{
 
     fun verifiedHATDomains(): Array<String> {
 
-        return arrayOf(".hubofallthings.net", ".hubat.net", "hat.direct", "savy.io")
+        return arrayOf(".hubofallthings.net", ".hubat.net", "hat.direct")
     }
 }
 

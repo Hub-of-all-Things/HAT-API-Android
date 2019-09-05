@@ -58,7 +58,7 @@ open class HATService {
             successfulVerification(userHATDomain)
         } else {
 
-            val message: String = "The domain you entered is incorrect. Accepted domains are 'hubofallthings.net, hat.direct, hubat.net and savy.io. Please correct any typos and try again"
+            val message: String = "The domain you entered is incorrect. Accepted domains are 'hubofallthings.net, hat.direct and hubat.net. Please correct any typos and try again"
             failedVerification(message)
         }
     }
