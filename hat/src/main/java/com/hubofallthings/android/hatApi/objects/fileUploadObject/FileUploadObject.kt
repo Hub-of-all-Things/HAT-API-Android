@@ -40,7 +40,7 @@ data class FileUploadObject(
     // The image url of the uploaded file
     var contentUrl: String = "",
     // Is the uploaded file public
-    var contentPublic : Boolean= false,
+    var contentPublic: Boolean = false,
     // The permissions of the uploaded file
     var permissions: Array<FileUploadObjectPermissions>
 )

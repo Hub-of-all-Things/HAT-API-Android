@@ -30,6 +30,6 @@ class HATFormatterManager {
         convertedString = convertedString.replace("-", "+", true)
         convertedString = convertedString.replace("_", "/", true)
 
-        return  convertedString
+        return convertedString
     }
 }

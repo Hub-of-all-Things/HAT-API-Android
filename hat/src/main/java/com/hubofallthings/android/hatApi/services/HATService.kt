@@ -44,10 +44,10 @@ import java.security.spec.X509EncodedKeySpec
 open class HATService {
 
     fun formatAndVerifyDomain(
-            userHATDomain: String,
-            verifiedDomains: Array<String> = VerifiedDomains().verifiedHATDomains(),
-            successfulVerification: (String) -> Void,
-            failedVerification: (String) -> Void
+        userHATDomain: String,
+        verifiedDomains: Array<String> = VerifiedDomains().verifiedHATDomains(),
+        successfulVerification: (String) -> Void,
+        failedVerification: (String) -> Void
     ) {
 
         val trimmedString: String = userHATDomain.trim()
@@ -63,12 +63,11 @@ open class HATService {
         }
     }
 
-
     fun loginToHATAuthorization(
-            applicationName: String,
-            url: String,
-            success: ((String?, String?) -> Unit)?,
-            failed: ((HATError) -> Unit)?
+        applicationName: String,
+        url: String,
+        success: ((String?, String?) -> Unit)?,
+        failed: ((HATError) -> Unit)?
     ) {
 
         val token = HATNetworkManager().getQueryStringParameter(url, "token")
@@ -83,17 +82,16 @@ open class HATService {
                 this.verifyToken(r, token, applicationName, decodedToken, userDomain, success, failed)
             }
         }
-
     }
 
     fun verifyToken(
-            r: ResultType?,
-            token: String,
-            applicationName: String,
-            decodedToken: JWT,
-            userDomain: String,
-            success: ((String?, String?) -> Unit)?,
-            failed: ((HATError) -> Unit)?
+        r: ResultType?,
+        token: String,
+        applicationName: String,
+        decodedToken: JWT,
+        userDomain: String,
+        success: ((String?, String?) -> Unit)?,
+        failed: ((HATError) -> Unit)?
     ) {
         when (r) {
 

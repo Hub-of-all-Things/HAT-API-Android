@@ -18,6 +18,6 @@ import com.hubofallthings.android.hatApi.objects.extrernalapps.HATExternalAppsIl
 import java.io.Serializable
 
 data class HATToolsGraphicsObject(
-        var logo: HATExternalAppsIllustrationObject,
-        var screenshots:  Array<HATExternalAppsIllustrationObject>
+    var logo: HATExternalAppsIllustrationObject,
+    var screenshots: Array<HATExternalAppsIllustrationObject>
 ) : Serializable

@@ -96,7 +96,6 @@ class HATAccountService {
         }
     }
 
-
     // MARK: - Delete from hat
 
     /**
@@ -149,7 +148,6 @@ class HATAccountService {
 
         // define the url to connect to
         val url: String = "https://notables.hubofallthings.com/api/bulletin/tickle"
-
 
         HATNetworkManager().getRequest(
                 url,

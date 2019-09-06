@@ -19,24 +19,24 @@ import java.io.Serializable
 data class HATDataDebitPermissionsObject(
     // MARK: - Variables
 
-    /// The created date of the permission
+    // The created date of the permission
     val dateCreated: String = "",
-    /// The purpose of the permission
+    // The purpose of the permission
     val purpose: String?,
-        /// The start date of the permission
+    // The start date of the permission
     val start: String?,
-        /// The end date of the permission
+    // The end date of the permission
     val end: String?,
-        /// A flag indicating if the permissions will auto cancel when the debit will end
+    // A flag indicating if the permissions will auto cancel when the debit will end
     val cancelAtPeriodEnd: Boolean = false,
-        /// The terms and conditions URL for the permissions
+    // The terms and conditions URL for the permissions
     val termsUrl: String?,
-        /// The period duration
+    // The period duration
     val period: Number = 0,
-        /// Is the permission active
+    // Is the permission active
     val active: Boolean = false,
-        /// Is the permission accepted
+    // Is the permission accepted
     val accepted: Boolean = false,
-        /// It is possible for a permission to have an inner bundle object
+    // It is possible for a permission to have an inner bundle object
     val bundle: DataOfferRequiredDataDefinitionObjectV2
 ) : Serializable

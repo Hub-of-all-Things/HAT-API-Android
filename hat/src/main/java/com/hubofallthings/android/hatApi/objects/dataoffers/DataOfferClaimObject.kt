@@ -20,13 +20,13 @@ import java.io.Serializable
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 data class DataOfferClaimObject(
-        // MARK: - Variables
+    // MARK: - Variables
 
-        /// The data offer claim status
-        @JsonProperty("status") var claimStatus: String = "",
-        /// The data offer claim confirmed state
-        @JsonProperty("confirmed") var claimConfirmed: Boolean = false,
-        /// The data offer claim unix time stamp
-        @JsonProperty("dateCreated") var claimDateStamp: String = "",
-        @JsonProperty("dataDebitId") var dataDebitID: String = ""
-): Serializable
+    // The data offer claim status
+    @JsonProperty("status") var claimStatus: String = "",
+    // The data offer claim confirmed state
+    @JsonProperty("confirmed") var claimConfirmed: Boolean = false,
+    // The data offer claim unix time stamp
+    @JsonProperty("dateCreated") var claimDateStamp: String = "",
+    @JsonProperty("dataDebitId") var dataDebitID: String = ""
+) : Serializable

@@ -19,5 +19,5 @@ import java.io.Serializable
 
 data class HATToolsDataBundleObject(
     var name: String = "",
-    var bundle:  Map<String, DataOfferRequiredDataDefinitionBundleKeyV2>
+    var bundle: Map<String, DataOfferRequiredDataDefinitionBundleKeyV2>
 ) : Serializable

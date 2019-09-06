@@ -18,7 +18,6 @@ import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
-import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.feed.HATFeedObject
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread

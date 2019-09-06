@@ -18,12 +18,10 @@ import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import java.io.IOException
 
-
-open class HATParserManager{
+open class HATParserManager {
     @Throws(IOException::class)
     fun <T> jsonToObjectList(json: String?, tClass: Class<T>): List<T> {
         val mapper = jacksonObjectMapper()
@@ -33,12 +31,12 @@ open class HATParserManager{
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
         return try {
             mapper.readValue(json, mapper.typeFactory.constructCollectionType(ArrayList::class.java, tClass))
-        }catch (m : MismatchedInputException){
+        } catch (m: MismatchedInputException) {
             emptyList()
         }
     }
 }
-inline fun <reified T: Any?> String.toKotlinObject(): T {
+inline fun <reified T : Any?> String.toKotlinObject(): T {
     val mapper = jacksonObjectMapper()
     mapper.configOverride(String::class.java).setterInfo = JsonSetter.Value.forValueNulls(Nulls.FAIL)
     mapper.setDefaultSetterInfo(JsonSetter.Value.forValueNulls(Nulls.AS_EMPTY))
@@ -46,4 +44,3 @@ inline fun <reified T: Any?> String.toKotlinObject(): T {
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     return mapper.readValue(this, T::class.java)
 }
-

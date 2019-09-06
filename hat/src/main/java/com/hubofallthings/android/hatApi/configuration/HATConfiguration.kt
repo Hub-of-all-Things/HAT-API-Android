@@ -14,7 +14,7 @@
 
 package com.hubofallthings.android.hatApi.configuration
 
-class VerifiedDomains{
+class VerifiedDomains {
 
     fun verifiedHATDomains(): Array<String> {
 

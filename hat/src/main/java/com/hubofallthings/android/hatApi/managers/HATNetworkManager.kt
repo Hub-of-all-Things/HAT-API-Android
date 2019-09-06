@@ -18,38 +18,31 @@ import android.net.UrlQuerySanitizer
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.fuel.core.FuelManager
-import com.github.kittinunf.fuel.httpDelete
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 
 interface NetworkLayer {
-
     fun getRequest(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit)
     fun postRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
     fun putRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
     fun uploadRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
-    fun deleteRequest(url: String,  parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit)
-
+    fun deleteRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit)
     fun getRequestString(url: String, parameters: List<Pair<String, Any?>>? = null, headers: Map<String, String>, completion: (r: ResultType?) -> Unit)
 }
 
-enum class ResultType(var statusCode: Int?, var error: Error?, var json: com.github.kittinunf.fuel.android.core.Json?, var resultString: String?, var token: String?){
-
+enum class ResultType(var statusCode: Int?, var error: Error?, var json: com.github.kittinunf.fuel.android.core.Json?, var resultString: String?, var token: String?) {
     IsSuccess(null, null, null, null, null),
-    HasFailed(null, null, null,null, null);
+    HasFailed(null, null, null, null, null);
 }
 
-class HATNetworkManager: NetworkLayer {
-
+class HATNetworkManager : NetworkLayer {
     var resultType: ResultType? = null
 
-    override fun getRequest(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
+    override fun getRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
 
-        if (headers!= null)
+        if (headers != null)
         FuelManager.instance.baseHeaders = headers
-        Fuel.get(url, parameters).responseJson{ _, response, result ->
-
-            //do something with response
+        Fuel.get(url, parameters).responseJson { _, response, result ->
             when (result) {
 
                 is Result.Failure -> {
@@ -79,7 +72,6 @@ class HATNetworkManager: NetworkLayer {
                     test.resultString = null
                     test.token = token
 
-
                     resultType = test
                     completion(resultType)
                 }
@@ -87,11 +79,9 @@ class HATNetworkManager: NetworkLayer {
         }
     }
 
-    override fun getRequestString(url: String , parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+    override fun getRequestString(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
 
-        url.httpGet(parameters).responseString{_, response, result ->
-
-            //do something with response
+        url.httpGet(parameters).responseString { _, response, result ->
             when (result) {
 
                 is Result.Failure -> {
@@ -118,7 +108,6 @@ class HATNetworkManager: NetworkLayer {
                     test.resultString = test2
                     test.token = token
 
-
                     resultType = test
                     completion(resultType)
                 }
@@ -126,13 +115,13 @@ class HATNetworkManager: NetworkLayer {
         }
     }
 
-    override fun postRequest(url: String, body : String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
+    override fun postRequest(url: String, body: String, headers: Map<String, String>, completion: (r: ResultType?) -> Unit) {
         val timeout = 35000 // 35 seconds.
         val timeoutRead = 35000 // 35 seconds.
         FuelManager.instance.baseHeaders = headers
 
         Fuel.post(url).body(body).timeout(timeout).timeoutRead(timeoutRead).responseJson { _, response, result ->
-            when (result){
+            when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
                     val error = Error(ex)
@@ -179,7 +168,7 @@ class HATNetworkManager: NetworkLayer {
         FuelManager.instance.baseHeaders = headers
 
         Fuel.put(url).body(body).responseJson { _, response, result ->
-            when (result){
+            when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
                     val error = Error(ex)
@@ -214,7 +203,7 @@ class HATNetworkManager: NetworkLayer {
         FuelManager.instance.baseHeaders = headers
 
         Fuel.upload(url).body(body).responseJson { _, response, result ->
-            when (result){
+            when (result) {
                 is Result.Failure -> {
                     val ex = result.getException()
                     val error = Error(ex)
@@ -246,10 +235,10 @@ class HATNetworkManager: NetworkLayer {
     }
 
     override fun deleteRequest(url: String, parameters: List<Pair<String, Any?>>?, headers: Map<String, String>?, completion: (r: ResultType?) -> Unit) {
-        if (headers!= null)
+        if (headers != null)
             FuelManager.instance.baseHeaders = headers
-        Fuel.delete(url, parameters).responseJson{ _, response, result ->
-            //do something with response
+        Fuel.delete(url, parameters).responseJson { _, response, result ->
+            // do something with response
             when (result) {
 
                 is Result.Failure -> {
@@ -278,7 +267,6 @@ class HATNetworkManager: NetworkLayer {
                     test.json = test2
                     test.resultString = null
                     test.token = token
-
 
                     resultType = test
                     completion(resultType)
