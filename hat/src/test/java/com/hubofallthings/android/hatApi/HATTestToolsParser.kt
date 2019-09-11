@@ -17,7 +17,6 @@ package com.hubofallthings.android.hatApi
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.tools.HATToolsObject
-import com.hubofallthings.android.hatApi.services.ToolsService
 import org.junit.Assert
 import org.junit.Test
 

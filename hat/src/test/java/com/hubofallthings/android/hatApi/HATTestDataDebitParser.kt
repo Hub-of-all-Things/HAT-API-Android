@@ -17,7 +17,6 @@ package com.hubofallthings.android.hatApi
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.datadebits.HATDataDebitObject
-import com.hubofallthings.android.hatApi.objects.extrernalapps.HATApplicationObject
 import org.junit.Assert
 import org.junit.Test
 

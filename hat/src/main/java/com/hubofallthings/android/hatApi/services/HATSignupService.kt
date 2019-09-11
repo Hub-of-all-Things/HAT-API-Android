@@ -17,12 +17,12 @@ package com.hubofallthings.android.hatApi.services
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 
 data class SignupValidationSuccess(
-        val message: String
+    val message: String
 )
 
 data class SignupValidationError(
-        val message: String,
-        val cause: String
+    val message: String,
+    val cause: String
 )
 
 class HATSignupService {
@@ -62,7 +62,6 @@ class HATSignupService {
                     val cause: String? = json.obj()["cause"].toString()
 
                     failCallBack(SignupValidationError(message ?: "Email invalid", cause ?: "Unknown error"))
-
                 }
 
                 if (it?.json == null) {
@@ -74,8 +73,6 @@ class HATSignupService {
 
     /**
     Validates HAT address with HAT
-
-
     - parameter baseUrl: The base url to validate with the HAT f.e https://hatters.hubat.net
     - parameter name: The HAT name to validate with the HAT
     - parameter sandbox: If the application is sandbox or not
@@ -107,7 +104,6 @@ class HATSignupService {
                     val cause: String? = json.obj()["cause"].toString()
 
                     failCallBack(SignupValidationError(message ?: "HAT name invalid", cause ?: "Unknown error"))
-
                 }
 
                 if (it?.json == null) {

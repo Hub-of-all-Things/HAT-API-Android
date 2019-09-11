@@ -15,27 +15,17 @@
 package com.hubofallthings.android.hatApi.services
 
 import android.util.Log
-import com.fasterxml.jackson.annotation.JsonSetter
-import com.fasterxml.jackson.annotation.Nulls
-import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelError
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.result.Result
 import com.hubofallthings.android.hatApi.HATError
-import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.fileUploadObject.FileUploadObject
+import java.io.File
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
-import android.content.ContentResolver
-import android.net.Uri
-
 
 class HATFileService {
     private val TAG = HATFileService::class.java.simpleName
@@ -73,7 +63,6 @@ class HATFileService {
     fun deleteFile(fileID: String, token: String, userDomain: String, successCallback: (Boolean, String?) -> Unit, errorCallBack: (HATError) -> Unit) {
 
 //        val url = "https://$userDomain/api/v2.6/files/file/$fileID"
-
     }
 
     // MARK: - Upload File to hat
@@ -88,11 +77,11 @@ class HATFileService {
     - parameter errorCallback: A function to execute on failure, returning an error
      */
     fun uploadFileToHAT(
-            fileName: String,
-            token: String,
-            userDomain: String,
-            completion: (FileUploadObject, String) -> Unit,
-            errorCallback: (FuelError) -> Unit
+        fileName: String,
+        token: String,
+        userDomain: String,
+        completion: (FileUploadObject, String) -> Unit,
+        errorCallback: (FuelError) -> Unit
     ) {
 
         // create the url
@@ -134,11 +123,12 @@ class HATFileService {
     }
 
     private fun uploadFile(
-            image: File,
-            type: String = "image/png",
-            contentUrl: String,
-            completion: (String) -> Unit,
-            errorCallback: (FuelError) -> Unit) {
+        image: File,
+        type: String = "image/png",
+        contentUrl: String,
+        completion: (String) -> Unit,
+        errorCallback: (FuelError) -> Unit
+    ) {
 
         Log.i("mime-type", type)
         FuelManager.instance.baseHeaders = mapOf("x-amz-server-side-encryption" to "AES256", "Content-Type" to type)
@@ -160,7 +150,6 @@ class HATFileService {
                 }
             }
         }
-
     }
 
     // MARK: - Complete Upload File to hat
@@ -176,11 +165,11 @@ class HATFileService {
     - parameter errorCallback: A function to execute on failure, returning an error
      */
     private fun completeUploadFileToHAT(
-            fileID: String,
-            token: String,
-            userDomain: String,
-            completion: (FileUploadObject, String?) -> Unit,
-            errorCallback: (FuelError) -> Unit
+        fileID: String,
+        token: String,
+        userDomain: String,
+        completion: (FileUploadObject, String?) -> Unit,
+        errorCallback: (FuelError) -> Unit
     ) {
         // create the url
         val uploadURL = "https://$userDomain/api/v2.6/files/file/$fileID/complete"
@@ -225,11 +214,12 @@ class HATFileService {
     - parameter errorCallBack: An @escaping (HATError) -> Void to execute when something went wrong
      */
     fun makeFilePublic(
-            fileID: String,
-            token: String,
-            userDomain: String,
-            completion: ((Boolean) -> Unit)?,
-            errorCallBack: ((FuelError) -> Unit)?) {
+        fileID: String,
+        token: String,
+        userDomain: String,
+        completion: ((Boolean) -> Unit)?,
+        errorCallBack: ((FuelError) -> Unit)?
+    ) {
         // create the url
         val uploadURL = "https://$userDomain/api/v2.6/files/allowAccessPublic/$fileID"
         FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json", "x-auth-token" to token)
@@ -254,7 +244,6 @@ class HATFileService {
                 else -> {
                 }
             }
-
         }
     }
 
@@ -277,7 +266,6 @@ class HATFileService {
                     e.errorMessage = response.responseMessage
                     e.errorCode = response.statusCode
                     errorCallBack(e)
-
                 }
                 is Result.Success -> {
                     if (response.statusCode == 200) {
@@ -287,9 +275,7 @@ class HATFileService {
                 else -> {
                 }
             }
-
         }
-
     }
 
     /**
@@ -319,13 +305,13 @@ class HATFileService {
     - parameter errorCallBack: A Function to execute on failure
      */
     fun uploadFileToHATWrapper(
-            token: String,
-            userDomain: String,
-            fileToUpload: File,
-            name: String,
-            type: String,
-            completion: ((FileUploadObject, String) -> Unit)?,
-            errorCallBack: ((FuelError) -> Unit)?
+        token: String,
+        userDomain: String,
+        fileToUpload: File,
+        name: String,
+        type: String,
+        completion: ((FileUploadObject, String) -> Unit)?,
+        errorCallBack: ((FuelError) -> Unit)?
     ) {
 
         uploadFileToHAT(name, token, userDomain, { fileUploadObject, _ ->

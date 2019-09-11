@@ -20,12 +20,12 @@ import com.hubofallthings.android.hatApi.objects.dataoffers.DataOfferRequiredDat
 import java.io.Serializable
 
 data class HATExternalAppsDataRequiredObject(
-        // MARK: - Variables
+    // MARK: - Variables
 
-        val rolling: Boolean = false,
-        // The bundle info definition for this app
-        @JsonSetter(nulls = Nulls.AS_EMPTY)
-        val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
-        val startDate: String? = null,
-        val endDate: String? = null
+    val rolling: Boolean = false,
+    // The bundle info definition for this app
+    @JsonSetter(nulls = Nulls.AS_EMPTY)
+    val bundle: DataOfferRequiredDataDefinitionObjectV2? = null,
+    val startDate: String? = null,
+    val endDate: String? = null
 ) : Serializable

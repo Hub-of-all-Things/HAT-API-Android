@@ -18,7 +18,6 @@ import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
-import com.hubofallthings.android.hatApi.objects.datadebits.HATDataDebitObject
 import com.hubofallthings.android.hatApi.objects.dataoffers.DataOfferObject
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -174,7 +173,7 @@ class HATDataOffersService {
             when (r) {
                 ResultType.IsSuccess -> {
                     if (r.statusCode != 401) {
-                        successfulCallBack("message", r.token)//todo
+                        successfulCallBack("message", r.token) // todo
                     }
                 }
                 ResultType.HasFailed -> {
@@ -200,6 +199,5 @@ class HATDataOffersService {
      */
     fun getMerchants(userToken: String, userDomain: String, successfulCallBack: (List<String>, String?) -> Unit, failCallBack: (HATError) -> Unit) {
         val url: String = "https://$userDomain/api/v2/data/dex/databuyer"
-
     }
 }

@@ -22,7 +22,7 @@ ext {
     siteUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android'
     gitUrl = 'https://github.com/Hub-of-all-Things/HAT-API-Android.git'
 
-    libraryVersion = '0.1.4'
+    libraryVersion = '0.1.4.1'
 
     developerId = 'lizchandler'
     developerName = 'Myteletsis Eleftherios'
@@ -36,16 +36,17 @@ ext {
 
 
 android {
-
     compileSdkVersion 28
+
     defaultConfig {
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 1
-        versionName  '0.1.4'
+        versionName  '0.1.4.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -59,6 +60,11 @@ android {
             minifyEnabled false
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -76,10 +82,10 @@ dependencies {
     implementation "org.jetbrains.anko:anko-commons:0.10.4"
     implementation 'org.bouncycastle:bcprov-jdk15on:1.59'
 
-    androidTestImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.1.1'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.1'
     testImplementation 'org.mockito:mockito-core:2.23.0'

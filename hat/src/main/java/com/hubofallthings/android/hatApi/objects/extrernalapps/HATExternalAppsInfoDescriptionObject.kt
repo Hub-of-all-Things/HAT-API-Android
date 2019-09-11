@@ -17,12 +17,12 @@ package com.hubofallthings.android.hatApi.objects.extrernalapps
 import java.io.Serializable
 
 data class HATExternalAppsInfoDescriptionObject(
-        // MARK: - Variables
+    // MARK: - Variables
 
-        // The description text as simple String
-        val text: String? = null,
-        // The description text markdown formatted
-        val markdown: String? = null,
-        // The description text html formatte
-        val html: String? = null
+    // The description text as simple String
+    val text: String? = null,
+    // The description text markdown formatted
+    val markdown: String? = null,
+    // The description text html formatted
+    val html: String? = null
 ) : Serializable

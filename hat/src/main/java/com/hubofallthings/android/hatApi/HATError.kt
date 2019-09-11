@@ -24,7 +24,7 @@ enum class ExceptionType {
     NoInternetConnection
 }
 
-class HATError: Exception() {
+class HATError : Exception() {
 
     var errorMessage: String? = null
     var errorCode: Int? = null

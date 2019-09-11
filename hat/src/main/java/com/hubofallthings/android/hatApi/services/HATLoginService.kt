@@ -17,13 +17,13 @@ package com.hubofallthings.android.hatApi.services
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 
 data class LoginLookupSuccess(
-        val hatName: String,
-        val hatCluster: String
+    val hatName: String,
+    val hatCluster: String
 )
 
 data class LoginLookupError(
-        val message: String,
-        val cause: String
+    val message: String,
+    val cause: String
 )
 
 class HATLoginService {

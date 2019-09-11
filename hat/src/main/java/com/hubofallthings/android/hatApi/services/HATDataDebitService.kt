@@ -29,7 +29,7 @@ interface DataDebitService {
     fun getAvailableDataDebits(userToken: String, userDomain: String, completion: ((List<HATDataDebitObject>?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
     fun disableDataDebit(userToken: String, userDomain: String, dataDebitID: String, completion: ((HATDataDebitObject?, String?) -> Unit), failCallBack: ((HATError) -> Unit))
 }
-class HATDataDebitService: DataDebitService {
+class HATDataDebitService : DataDebitService {
 
     // MARK: Get Data Debits
 
@@ -160,7 +160,6 @@ class HATDataDebitService: DataDebitService {
             }
         }
     }
-
 
     // MARK: - Disable data debit
 
