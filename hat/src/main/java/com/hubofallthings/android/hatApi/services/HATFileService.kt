@@ -23,9 +23,9 @@ import com.github.kittinunf.result.Result
 import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.toKotlinObject
 import com.hubofallthings.android.hatApi.objects.fileUploadObject.FileUploadObject
+import java.io.File
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import java.io.File
 
 class HATFileService {
     private val TAG = HATFileService::class.java.simpleName

@@ -24,25 +24,50 @@ import org.junit.Test
 
 class HATTestExternalAppsService : ExternalAppsService {
     private val mockAppsObj = HATApplicationObject(HATExternalAppsObject("testapp", HATExternalAppsKindObject("", "", "App"), null, HATExternalAppsInfoDeveloperObject("", "", "", ""), null, null, null))
-//    private val mockAppsObjDataPlug = HATApplicationObject(HATExternalAppsObject("testDataPlug", HATExternalAppsKindObject("", "", "DataPlug"), null, HATExternalAppsInfoDeveloperObject("", "", "", ""), null, null, null))
-
     private val tokenReturn = "2592fsdfsdf348j0572v89jhf9dsyguisd"
-//    private val listApps = listOf<HATApplicationObject>(mockAppsObj, mockAppsObjDataPlug)
 
     override fun getAppWithAppId(userToken: String, userDomain: String, applicationId: String, completion: (HATApplicationObject?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        if (userToken.isEmpty()) {
+            val e = HATError()
+            e.errorMessage = "empty token"
+            e.errorCode = 403
+            failCallBack(e)
+        } else {
+            completion(mockAppsObj, tokenReturn)
+        }
     }
 
     override fun getExternalByKind(kind: String, userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        if (userToken.isEmpty()) {
+            val e = HATError()
+            e.errorMessage = "empty token"
+            e.errorCode = 403
+            failCallBack(e)
+        } else {
+            completion(listOf(mockAppsObj), tokenReturn)
+        }
     }
 
     override fun getDataPlugs(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        if (userToken.isEmpty()) {
+            val e = HATError()
+            e.errorMessage = "empty token"
+            e.errorCode = 403
+            failCallBack(e)
+        } else {
+            completion(listOf(mockAppsObj), tokenReturn)
+        }
     }
 
     override fun getApps(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
+        if (userToken.isEmpty()) {
+            val e = HATError()
+            e.errorMessage = "empty token"
+            e.errorCode = 403
+            failCallBack(e)
+        } else {
+            completion(listOf(mockAppsObj), tokenReturn)
+        }
     }
 
     override fun getExternalApps(userToken: String, userDomain: String, completion: (List<HATApplicationObject>?, String?) -> Unit, failCallBack: (HATError) -> Unit) {

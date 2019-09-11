@@ -15,10 +15,10 @@
 package com.hubofallthings.android.hatApi.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.configuration.ContentType
 import com.hubofallthings.android.hatApi.configuration.TokenParameters
 import com.hubofallthings.android.hatApi.configuration.VerifiedDomains
-import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
 import com.hubofallthings.android.hatApi.managers.HATParserManager
 import com.hubofallthings.android.hatApi.managers.ResultType
@@ -30,13 +30,12 @@ import com.nimbusds.jwt.JWT
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
 import java.io.StringReader
+import java.security.KeyFactory
 import java.security.interfaces.RSAPublicKey
+import java.security.spec.X509EncodedKeySpec
 import org.bouncycastle.util.io.pem.PemReader
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-
-import java.security.KeyFactory
-import java.security.spec.X509EncodedKeySpec
 
 /**
  * Created by whiteshadow on 23/3/18.

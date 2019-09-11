@@ -14,15 +14,15 @@
 
 package com.hubofallthings.android.hatApi
 
-import com.hubofallthings.android.hatApi.services.HATService
 import com.hubofallthings.android.hatApi.managers.ResultType
+import com.hubofallthings.android.hatApi.services.HATService
 import com.nimbusds.jose.JOSEException
 import com.nimbusds.jose.crypto.RSASSAVerifier
 import com.nimbusds.jwt.JWTParser
 import com.nimbusds.jwt.SignedJWT
-import org.junit.Test
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 class HATServiceTests {
     val publicKey = "-----BEGIN PUBLIC KEY-----\n" +

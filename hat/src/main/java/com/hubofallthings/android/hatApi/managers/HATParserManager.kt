@@ -17,8 +17,8 @@ package com.hubofallthings.android.hatApi.managers
 import com.fasterxml.jackson.annotation.JsonSetter
 import com.fasterxml.jackson.annotation.Nulls
 import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import java.io.IOException
 
 open class HATParserManager {
