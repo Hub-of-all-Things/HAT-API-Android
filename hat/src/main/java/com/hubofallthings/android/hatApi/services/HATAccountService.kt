@@ -15,6 +15,7 @@
 package com.hubofallthings.android.hatApi.services
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.github.kittinunf.fuel.android.core.Json
 import com.github.kittinunf.fuel.core.FuelManager
 import com.hubofallthings.android.hatApi.HATError
 import com.hubofallthings.android.hatApi.managers.HATNetworkManager
@@ -23,6 +24,97 @@ import com.hubofallthings.android.hatApi.objects.BodyRequest
 import com.hubofallthings.android.hatApi.objects.Transformation
 
 class HATAccountService {
+
+    // MARK: - Get hat values from a table
+
+    /**
+    Gets values from a particular table in use with v2 API
+
+    - parameter token: The user's token
+    - parameter userDomain: The user's domain
+    - parameter namespace: The namespace to read from
+    - parameter scope: The scope to read from
+    - parameter parameters: The parameters to pass to the request, e.g. startime, endtime, limit
+    - parameter successCallback: A callback called when successful of type @escaping ([JSON], String?) -> Void
+    - parameter failCallback: A callback called when failed of type @escaping (HATTableError) -> Void)
+     */
+    fun getHatTableValues(token: String, userDomain: String, namespace: String, scope: String, parameters: List<Pair<String, Any?>>?, successCallback: (Json, String?) -> Unit, failCallBack: (HATError) -> Unit) {
+        val url = "https://$userDomain/api/v2.6/data/$namespace/$scope"
+
+        HATNetworkManager().getRequest(url, parameters, mapOf(
+            "Content-Type" to "application/json",
+            "x-auth-token" to token
+        )) {
+            if (it?.statusCode == 200) {
+                if (it.json == null) {
+                    val e = HATError()
+                    e.errorMessage = "Json is null"
+                    e.errorCode = it.statusCode
+                    failCallBack(e)
+                }
+
+                it.json?.let { json ->
+                    successCallback(json, it.token)
+                }
+            } else {
+                val e = HATError()
+                e.errorMessage = "Result type is not success"
+                e.errorCode = it?.statusCode
+                failCallBack(e)
+            }
+        }
+    }
+
+    // MARK: - Create value
+
+    /**
+    Gets values from a particular table in use with v2 API
+
+    - parameter userToken: The user's token
+    - parameter userDomain: The user's domain
+    - parameter namespace: The namespace to read from
+    - parameter scope: The scope to read from
+    - parameter body: The body to pass to the request, e.g. { "value": "my name" }
+    - parameter successCallback: A callback called when successful of type @escaping (JSON, String?) -> Void
+    - parameter failCallback: A callback called when failed of type @escaping (HATTableError) -> Void)
+     */
+    fun createTableValue(token: String, userDomain: String, namespace: String, scope: String, body: String, successCallback: (Json, String?) -> Unit, failCallback: (HATError) -> Unit) {
+        // form the url
+        val url = "https://$userDomain/api/v2.6/data/$namespace/$scope"
+
+        HATNetworkManager().postRequest(url, body, mapOf(
+            "Content-Type" to "application/json",
+            "x-auth-token" to token
+        )) {
+            when (it) {
+                ResultType.IsSuccess -> {
+                    if (it.json == null) {
+                        val e = HATError()
+                        e.errorCode = it.statusCode
+                        e.errorMessage = it.error?.localizedMessage
+                        failCallback(e)
+                    }
+
+                    it.json?.let {json ->
+                        successCallback(json, it.token)
+                    }
+                }
+                ResultType.HasFailed -> {
+                    val e = HATError()
+                    e.errorCode = it.statusCode
+                    e.errorMessage = it.error?.localizedMessage
+                    failCallback(e)
+                }
+                null -> {
+                    val e = HATError()
+                    e.errorCode = it?.statusCode
+                    e.errorMessage = it?.error?.localizedMessage
+                    failCallback(e)
+                }
+            }
+        }
+    }
+
     // MARK: - Reset Password
 
     /**
@@ -35,7 +127,6 @@ class HATAccountService {
      */
     fun resetPassword(userDomain: String, email: String, successCallback: (String?) -> Unit, failCallback: (HATError) -> Unit) {
         val url = "https://$userDomain/control/v2/auth/passwordReset"
-        FuelManager.instance.baseHeaders = mapOf("Content-Type" to "application/json")
 
         val mapper = jacksonObjectMapper()
         val passwordResetBody = mapper.writeValueAsString(mapOf("email" to email))
