@@ -11,12 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Pre run scripts
-        run: |
-          android update sdk -a --no-ui --filter android-$EMULATOR_API
-          android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-$EMULATOR_API
-          bash ./gradlew clean
-        env:
-          EMULATOR_API: 24
+        run: bash ./gradlew clean
       - name: Before install
         run: sdkmanager "platforms;android-$ANDROID_API"
         env:
