@@ -1,0 +1,29 @@
+name: Deploy HAT Android API
+
+on:
+  push:
+    branches:
+      - github-actions
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Pre run scripts
+        run: |
+          android update sdk -a --no-ui --filter android-$EMULATOR_API
+          android update sdk -a --no-ui --filter sys-img-armeabi-v7a-android-$EMULATOR_API
+          bash ./gradlew clean
+        env:
+          EMULATOR_API: 24
+      - name: Before install
+        run: sdkmanager "platforms;android-$ANDROID_API"
+        env:
+          ANDROID_API: 28
+      - name: Test app
+        run: bash ./gradlew build assembleAndroidTest -PtestCoverageEnabled='true'
+      - name: Build app
+        run: bash ./gradlew :hat:installDebug :hat:installDebugAndroidTest -PtestCoverageEnabled='true'
+      - name: Test coverage
+        run: adb shell am instrument -w -r -e executionMode travisTest -e coverage true org.andstatus.app.tests/androidx.test.runner.AndroidJUnitRunner |& tee build/adb-test.log

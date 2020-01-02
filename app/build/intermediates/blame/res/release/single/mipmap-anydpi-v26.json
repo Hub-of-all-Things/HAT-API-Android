@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/mipmap-anydpi-v26/ic_launcher.xml",
+        "source": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/mipmap-anydpi-v26/ic_launcher_round.xml",
+        "source": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
+    }
+]

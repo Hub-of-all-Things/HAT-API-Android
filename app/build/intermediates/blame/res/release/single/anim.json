@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_fade_out.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_popup_exit.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/tooltip_exit.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/tooltip_exit.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_fade_in.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_popup_enter.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_popup_enter.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/tooltip_enter.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/tooltip_enter.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/anim/abc_slide_out_bottom.xml"
+    }
+]

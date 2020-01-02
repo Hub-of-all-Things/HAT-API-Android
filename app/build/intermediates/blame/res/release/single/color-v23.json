@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_btn_colored_borderless_text_material.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_btn_colored_text_material.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_default.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_default.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_color_highlight_material.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_color_highlight_material.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_edittext.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_edittext.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_btn_checkable.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_switch_track.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_spinner.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_spinner.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v23/abc_tint_seek_thumb.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v23/abc_tint_seek_thumb.xml"
+    }
+]

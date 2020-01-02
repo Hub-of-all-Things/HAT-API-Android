@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+    },
+    {
+        "merged": "/Users/whiteshadow/Documents/Development/Android Projects/HAT_API/app/build/intermediates/res/merged/release/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/Users/whiteshadow/.gradle/caches/transforms-1/files-1.1/appcompat-v7-26.1.0.aar/8a04c4344c5d4b3a335b783f8e3fa718/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    }
+]
