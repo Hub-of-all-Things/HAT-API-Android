@@ -12,10 +12,6 @@ jobs:
       - uses: actions/checkout@v1
       - name: Pre run scripts
         run: bash ./gradlew clean
-      - name: Before install
-        run: sdkmanager "platforms;android-$ANDROID_API"
-        env:
-          ANDROID_API: 28
       - name: Test app
         run: bash ./gradlew build assembleAndroidTest -PtestCoverageEnabled='true'
       - name: Build app
